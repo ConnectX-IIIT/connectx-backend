@@ -23,6 +23,11 @@ const userSchema = new mongoose.Schema({
         length: 3,
         required: true
     },
+    joiningYear: {
+        type: Number,
+        length: 4,
+        required: true
+    },
     passingYear: {
         type: Number,
         length: 4,
