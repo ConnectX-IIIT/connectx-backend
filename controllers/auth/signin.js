@@ -28,12 +28,12 @@ exports.signIn = async (req, res) => {
             });
         }
 
-        const token = await jwt.sign(
-            {
-                email: email
-            },
-            process.env.SECRET_KEY
-        );
+        // const token = await jwt.sign(
+        //     {
+        //         email: email
+        //     },
+        //     process.env.SECRET_KEY
+        // );
 
         return res.status(200).json({
             message: 'user signed in successfully'
