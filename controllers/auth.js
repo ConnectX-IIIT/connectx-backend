@@ -8,7 +8,7 @@ const emailValidator = require("email-validator");
 const { readHTMLFile, transporter } = require('../configs/mailer');
 require('dotenv').config();
 
-const baseurl_for_user_verification = "http://localhost:3000/auth/verify/";
+const baseurl_for_user_verification = "https://obscure-ridge-13663.herokuapp.com/auth/verify/";
 
 exports.register = async (req, res) => {
 
