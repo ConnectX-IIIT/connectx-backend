@@ -1,11 +1,10 @@
-const User = require('../model/userSchema');
+const User = require('../../model/userSchema');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const handlebars = require('handlebars');
-const path = require('path');
-const { passwordValidate } = require('../helper/password_validator');
+const { passwordValidate } = require('../../helper/password_validator');
 const emailValidator = require("email-validator");
-const { readHTMLFile, transporter } = require('../configs/mailer');
+const { readHTMLFile, transporter } = require('../../configs/mailer');
 require('dotenv').config();
 
 const baseurl_for_user_verification = "https://obscure-ridge-13663.herokuapp.com/auth/verify/";
@@ -65,7 +64,7 @@ exports.register = async (req, res) => {
 
         let link = baseurl_for_user_verification + token;
 
-        readHTMLFile(__dirname + '/user_verification_mail.html', async function (err, html) {
+        readHTMLFile(__dirname + '/../../helper/user_verification_mail.html', async function (err, html) {
             var template = handlebars.compile(html);
             var replacements = {
                 username: `${name}`,
@@ -94,75 +93,3 @@ exports.register = async (req, res) => {
         })
     }
 }
-
-exports.signIn = async (req, res) => {
-    const { email, password } = req.body;
-
-    if (!email || !password) {
-        return res.status(400).json({
-            error: 'Please fill all details properly'
-        })
-    }
-
-    try {
-        const userDetails = await User.findOne({ email: email });
-
-        if (!userDetails) {
-            return res.status(401).json({
-                error: 'user does not exist'
-            })
-        }
-
-        const result = await bcrypt.compare(password, userDetails.password);
-        if (!result) {
-            return res.status(444).json({
-                error: "Incorrect password!",
-            });
-        }
-
-        const token = await jwt.sign(
-            {
-                email: email
-            },
-            process.env.SECRET_KEY
-        );
-
-        return res.status(200).json({
-            message: 'user signed in successfully'
-        })
-
-    } catch (err) {
-        return res.status(500).json({
-            error: `${err}`
-        })
-    }
-}
-
-exports.verifyUser = async (req, res) => {
-    const userToken = req.userToken;
-
-    try {
-        const decoded = await jwt.verify(userToken, process.env.SECRET_KEY);
-        let userEmail = decoded.email;
-
-        await User.updateOne(
-            { email: userEmail }, {
-            $set: {
-                isVerified: true
-            }
-        });
-
-        let options = {
-            root: path.join(__dirname),
-        };
-
-        let fileName = "user_verification.html";
-
-        return res.status(200).sendFile(fileName, options);
-
-    } catch (err) {
-        return res.status(500).json({
-            error: `${err}`,
-        });
-    }
-};
