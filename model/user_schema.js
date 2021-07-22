@@ -33,6 +33,10 @@ const userSchema = new mongoose.Schema({
         length: 4,
         required: true
     },
+    description: {
+        type: String,
+        required: true
+    },
     isAlumni: {
         type: Boolean,
         default: false

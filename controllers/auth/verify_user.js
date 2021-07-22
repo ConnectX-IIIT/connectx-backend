@@ -1,4 +1,4 @@
-const User = require('../../model/userSchema');
+const User = require('../../model/user_schema');
 const jwt = require('jsonwebtoken');
 const path = require('path');
 require('dotenv').config();

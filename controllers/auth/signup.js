@@ -1,4 +1,4 @@
-const User = require('../../model/userSchema');
+const User = require('../../model/user_schema');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const handlebars = require('handlebars');
@@ -11,9 +11,9 @@ const baseurl_for_user_verification = "https://obscure-ridge-13663.herokuapp.com
 
 exports.register = async (req, res) => {
 
-    const { name, email, mobile, password, batch, passingYear, joiningYear, cPassword } = req.body;
+    const { name, email, mobile, password, batch, passingYear, joiningYear, cPassword, description } = req.body;
 
-    if (!name || !email || !mobile || !password || !batch || !passingYear || !joiningYear || !cPassword) {
+    if (!name || !email || !mobile || !password || !batch || !passingYear || !joiningYear || !cPassword || !description) {
         return res.status(400).json({
             error: 'Please fill all details properly'
         })
@@ -52,7 +52,7 @@ exports.register = async (req, res) => {
 
         const hash = await bcrypt.hash(password, 10);
 
-        const user = new User({ name, email, mobile, password: hash, batch, passingYear, joiningYear });
+        const user = new User({ name, email, mobile, password: hash, batch, passingYear, joiningYear, description });
         await user.save();
 
         const token = await jwt.sign(
