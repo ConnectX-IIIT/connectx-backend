@@ -1,5 +1,4 @@
 const User = require('../../model/user_schema');
-const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { OAuth2Client } = require("google-auth-library");
 require('dotenv').config();
@@ -20,9 +19,8 @@ exports.googleLogin = async (req, res) => {
                 tokenGenerate(user, res);
             }
 
-            const password = email + process.env.SECRET_KEY;
-            const hash = await bcrypt.hash(password, 10);
-            const newUser = new User({ name, email, password: hash });
+            const password = null;
+            const newUser = new User({ name, email, password, isVerified: true });
             await newUser.save();
 
             tokenGenerate(newUser, res);
@@ -38,18 +36,14 @@ exports.googleLogin = async (req, res) => {
 async function tokenGenerate(user, res) {
     const token = await jwt.sign(
         {
-            id: user._id,
+            userId: user._id,
             email: user.email
         },
         process.env.SECRET_KEY
     );
 
     return res.status(200).json({
-        message: 'user signed in successfully',
-        token: `${token}`,
-        user: {
-            email: user.email,
-            name: user.name
-        }
+        userId: user._id,
+        token: `${token}`
     })
 }
