@@ -57,7 +57,8 @@ exports.register = async (req, res) => {
 
         const token = await jwt.sign(
             {
-                email: email,
+                id: user._id,
+                email: email
             },
             process.env.SECRET_KEY
         );
