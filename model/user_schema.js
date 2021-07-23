@@ -10,44 +10,39 @@ const userSchema = new mongoose.Schema({
         required: true
     },
     mobile: {
-        type: Number,
-        required: true
+        type: Number
+    },
+    authType: {
+        type: Number
     },
     password: {
-        type: String,
-        required: true
+        type: String
     },
     profilePicture: String,
     batch: {
-        type: String,
-        length: 3,
-        required: true
+        type: String
     },
     joiningYear: {
-        type: Number,
-        length: 4,
-        required: true
+        type: Number
+    },
+    gender: {
+        type: String,
+        length: 1
     },
     passingYear: {
-        type: Number,
-        length: 4,
-        required: true
+        type: Number
     },
     description: {
-        type: String,
-        required: true
+        type: String
     },
     isAlumni: {
-        type: Boolean,
-        default: false
+        type: Boolean
     },
     isVerified: {
-        type: Boolean,
-        default: false
+        type: Boolean
     },
     isAdmin: {
-        type: Boolean,
-        default: false
+        type: Boolean
     },
     reports: Array,
     chats: Array,

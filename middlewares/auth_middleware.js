@@ -14,7 +14,7 @@ exports.verifyToken = async (req, res, next) => {
         const decoded = await jwt.verify(token, process.env.SECRET_KEY);
 
         const userEmail = decoded.email;
-        const userId = decoded.id;
+        const userId = decoded.userId;
 
         const userDetails = await User.findOne({ email: userEmail });
 
