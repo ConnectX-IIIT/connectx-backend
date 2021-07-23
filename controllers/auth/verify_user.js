@@ -17,13 +17,7 @@ exports.verifyUser = async (req, res) => {
             }
         });
 
-        let options = {
-            root: path.join(__dirname),
-        };
-
-        let fileName = "../../helper/user_verification.html";
-
-        return res.status(200).sendFile(fileName, options);
+        return res.status(200).sendFile(path.resolve(__dirname + '../../../helper/user_verification.html'));
 
     } catch (err) {
         return res.status(500).json({
