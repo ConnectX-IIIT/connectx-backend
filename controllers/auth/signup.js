@@ -9,11 +9,11 @@ require('dotenv').config();
 
 const baseurl_for_user_verification = "https://obscure-ridge-13663.herokuapp.com/auth/verify/";
 
-exports.register = async (req, res) => {
+exports.signUp = async (req, res) => {
 
-    const { name, email, mobile, password, batch, passingYear, joiningYear, cPassword, description } = req.body;
+    const { name, email, password, cPassword } = req.body;
 
-    if (!name || !email || !mobile || !password || !batch || !passingYear || !joiningYear || !cPassword || !description) {
+    if (!name || !email || !password || !cPassword) {
         return res.status(400).json({
             error: 'Please fill all details properly'
         })
@@ -42,9 +42,9 @@ exports.register = async (req, res) => {
     }
 
     try {
-        const userExist = await User.findOne({ email: email });
+        const userDetails = await User.findOne({ email: email });
 
-        if (userExist) {
+        if (userDetails) {
             return res.status(402).json({
                 error: 'user already exists'
             })
@@ -52,12 +52,12 @@ exports.register = async (req, res) => {
 
         const hash = await bcrypt.hash(password, 10);
 
-        const user = new User({ name, email, mobile, password: hash, batch, passingYear, joiningYear, description });
+        const user = new User({ name, email, password: hash, isVerified: false });
         await user.save();
 
         const token = await jwt.sign(
             {
-                id: user._id,
+                userId: user._id,
                 email: email
             },
             process.env.SECRET_KEY
@@ -84,7 +84,7 @@ exports.register = async (req, res) => {
         });
 
         return res.status(200).json({
-            message: 'user registered successfully',
+            userId: user._id,
             token: `${token}`
         })
 
