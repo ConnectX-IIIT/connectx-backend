@@ -2,7 +2,7 @@ const User = require('../../model/user_schema');
 require('dotenv').config();
 
 exports.register = async (req, res) => {
-    const { mobile, batch, joiningYear, gender, passingYear, description, userId } = req.body;
+    const { mobile, batch, joiningYear, gender, passingYear, description, isAlumni, userId } = req.body;
 
     if (!mobile || !batch || !joiningYear || !passingYear || !gender || !description) {
         return res.status(400).json({
@@ -19,6 +19,7 @@ exports.register = async (req, res) => {
                 joiningYear,
                 passingYear,
                 gender,
+                isAlumni,
                 description
             }
         });

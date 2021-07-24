@@ -52,7 +52,7 @@ exports.signUp = async (req, res) => {
 
         const hash = await bcrypt.hash(password, 10);
 
-        const user = new User({ name, email, password: hash, isVerified: false });
+        const user = new User({ name, email, password: hash, isMailVerified: false });
         await user.save();
 
         const token = await jwt.sign(

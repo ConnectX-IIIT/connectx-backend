@@ -13,7 +13,7 @@ exports.verifyUser = async (req, res) => {
         await User.updateOne(
             { email: userEmail }, {
             $set: {
-                isVerified: true
+                isMailVerified: true
             }
         });
 
