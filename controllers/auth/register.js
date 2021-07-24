@@ -20,7 +20,8 @@ exports.register = async (req, res) => {
                 passingYear,
                 gender,
                 isAlumni,
-                description
+                description,
+                isVerified: false
             }
         });
 
