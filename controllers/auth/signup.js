@@ -15,13 +15,13 @@ exports.signUp = async (req, res) => {
 
     if (!name || !email || !password || !cPassword) {
         return res.status(400).json({
-            error: 'Please fill all details properly'
+            error: 'Please fill all the details properly!'
         })
     }
 
     if (password != cPassword) {
         return res.status(401).json({
-            error: 'Password not matched'
+            error: 'Password not matched!'
         })
     }
 
@@ -29,7 +29,7 @@ exports.signUp = async (req, res) => {
 
     if (!emailValidation) {
         return res.status(404).json({
-            error: 'Enter a valid email',
+            error: 'Enter a valid email!',
         });
     }
 
@@ -46,7 +46,7 @@ exports.signUp = async (req, res) => {
 
         if (userDetails) {
             return res.status(402).json({
-                error: 'user already exists'
+                error: 'User already exists!'
             })
         }
 
@@ -90,7 +90,7 @@ exports.signUp = async (req, res) => {
 
     } catch (err) {
         return res.status(500).json({
-            error: `${err}`
+            error: `Server error occured!`
         })
     }
 }
