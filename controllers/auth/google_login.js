@@ -13,7 +13,7 @@ exports.googleLogin = async (req, res) => {
         const { email_verified, email, name } = response.payload;
 
         if (email_verified) {
-            const user = await User.findOne({ email });
+            const user = await User.findOne({ email: email });
 
             if (user) {
                 tokenGenerate(user, res);
