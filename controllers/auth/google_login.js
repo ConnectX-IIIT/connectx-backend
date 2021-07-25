@@ -16,7 +16,7 @@ exports.googleLogin = async (req, res) => {
             const user = await User.findOne({ email: email });
 
             if (user) {
-                tokenGenerate(user, res);
+                return tokenGenerate(user, res);
             }
 
             const password = null;
