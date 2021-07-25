@@ -8,7 +8,7 @@ exports.signIn = async (req, res) => {
 
     if (!email || !password) {
         return res.status(400).json({
-            error: 'Please fill all details properly'
+            error: 'Please fill all details properly!'
         })
     }
 
@@ -17,13 +17,13 @@ exports.signIn = async (req, res) => {
 
         if (!userDetails) {
             return res.status(401).json({
-                error: 'user does not exist'
+                error: 'User does not exist!'
             })
         }
 
         const result = await bcrypt.compare(password, userDetails.password);
         if (!result) {
-            return res.status(444).json({
+            return res.status(402).json({
                 error: "Incorrect password!",
             });
         }
@@ -43,7 +43,7 @@ exports.signIn = async (req, res) => {
 
     } catch (err) {
         return res.status(500).json({
-            error: `${err}`
+            error: `Server error occured!`
         })
     }
 }
