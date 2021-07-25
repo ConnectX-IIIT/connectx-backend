@@ -21,7 +21,7 @@ exports.verifyUser = async (req, res) => {
 
     } catch (err) {
         return res.status(500).json({
-            error: `${err}`,
+            error: `Server error occured!`,
         });
     }
 };
