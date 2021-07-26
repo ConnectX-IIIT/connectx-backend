@@ -20,7 +20,7 @@ exports.googleLogin = async (req, res) => {
             }
 
             const password = null;
-            const newUser = new User({ name, email, password, isVerified: true });
+            const newUser = new User({ name, email, password, isMailVerified: true });
             await newUser.save();
 
             tokenGenerate(newUser, res);
