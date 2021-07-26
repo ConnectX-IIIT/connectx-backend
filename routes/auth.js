@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const { googleLogin } = require("../controllers/auth/google_login");
+const { googleSignin } = require("../controllers/auth/google_signin");
+const { googleSignup } = require("../controllers/auth/google_signup");
 const { register } = require("../controllers/auth/register");
 const { signIn } = require("../controllers/auth/signin");
 const { signUp } = require("../controllers/auth/signup");
@@ -12,7 +13,8 @@ router.param("userToken", userIdParam);
 router.post("/signup", signUp);
 router.post("/signin", signIn);
 router.post("/register", register);
-router.post("/googlelogin", googleLogin);
+router.post("/googlesignin", googleSignin);
+router.post("/googlesignup", googleSignup);
 router.get("/verify/:userToken", verifyUser);
 
 module.exports = router;

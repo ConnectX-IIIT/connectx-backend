@@ -5,7 +5,7 @@ require('dotenv').config();
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
-exports.googleLogin = async (req, res) => {
+exports.googleSignup = async (req, res) => {
     const { tokenId } = req.body;
 
     try {
@@ -16,34 +16,32 @@ exports.googleLogin = async (req, res) => {
             const user = await User.findOne({ email: email });
 
             if (user) {
-                return tokenGenerate(user, res);
+                return res.status(400).json({
+                    error: `User already exists!`
+                })
             }
 
             const password = null;
             const newUser = new User({ name, email, password, isMailVerified: true });
             await newUser.save();
 
-            tokenGenerate(newUser, res);
+            const token = await jwt.sign(
+                {
+                    userId: newUser._id,
+                    email: newUser.email
+                },
+                process.env.SECRET_KEY
+            );
+
+            return res.status(200).json({
+                userId: newUser._id,
+                token: `${token}`
+            })
         }
 
     } catch (error) {
         return res.status(500).json({
-            error: `${error}`
+            error: `Server error occcured!`
         })
     }
-}
-
-async function tokenGenerate(user, res) {
-    const token = await jwt.sign(
-        {
-            userId: user._id,
-            email: user.email
-        },
-        process.env.SECRET_KEY
-    );
-
-    return res.status(200).json({
-        userId: user._id,
-        token: `${token}`
-    })
 }
