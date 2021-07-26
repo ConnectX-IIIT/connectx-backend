@@ -34,7 +34,7 @@ exports.googleSignup = async (req, res) => {
             );
 
             return res.status(200).json({
-                userId: newUser._id,
+                userData: newUser,
                 token: `${token}`
             })
         }
