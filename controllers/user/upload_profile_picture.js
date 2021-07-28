@@ -1,7 +1,6 @@
 const User = require('../../model/user_schema');
 
 exports.uploadProfilePicture = async (req, res) => {
-
     const photo = req.file.filename;
     const userId = req.body.userId;
 
