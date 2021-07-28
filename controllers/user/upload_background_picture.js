@@ -1,14 +1,22 @@
+const { uploadFile } = require('../../configs/aws_s3');
 const User = require('../../model/user_schema');
+const fs = require('fs');
+const util = require('util');
+const unlinkFile = util.promisify(fs.unlink);
 
 exports.uploadBackgroundImage = async (req, res) => {
-    const coverPhoto = req.file.filename;
+    const coverPhoto = req.file;
     const userId = req.body.userId;
 
     try {
+        const result = await uploadFile(coverPhoto);
+
+        await unlinkFile(coverPhoto.path);
+
         await User.updateOne(
             { _id: userId }, {
             $set: {
-                backgroundPicture: coverPhoto,
+                backgroundPicture: result.Key,
             }
         });
 
