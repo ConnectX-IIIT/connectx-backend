@@ -6,9 +6,6 @@ const { register } = require("../controllers/auth/register");
 const { signIn } = require("../controllers/auth/signin");
 const { signUp } = require("../controllers/auth/signup");
 const { verifyUser } = require("../controllers/auth/verify_user");
-const { userIdParam } = require("../middlewares/user_middleware");
-
-router.param("userToken", userIdParam);
 
 router.post("/signup", signUp);
 router.post("/signin", signIn);

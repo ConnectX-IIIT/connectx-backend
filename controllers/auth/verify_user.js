@@ -4,7 +4,7 @@ const path = require('path');
 require('dotenv').config();
 
 exports.verifyUser = async (req, res) => {
-    const userToken = req.userToken;
+    const userToken = req.params.userToken;
 
     try {
         const decoded = await jwt.verify(userToken, process.env.SECRET_KEY);
