@@ -18,7 +18,12 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String
     },
-    profilePicture: String,
+    profilePicture: {
+        type: String
+    },
+    backgroundPicture: {
+        type: String
+    },
     batch: {
         type: String
     },
@@ -47,10 +52,18 @@ const userSchema = new mongoose.Schema({
     isAdmin: {
         type: Boolean
     },
-    reports: Array,
-    chats: Array,
-    posts: Array,
-    questions: Array
+    reports: {
+        type: Array
+    },
+    chats: {
+        type: Array
+    },
+    posts: {
+        type: Array
+    },
+    questions: {
+        type: Array
+    }
 
 })
 
