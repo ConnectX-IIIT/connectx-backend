@@ -16,7 +16,9 @@ const chatSchema = new mongoose.Schema({
     reference: {
         type: String
     },
-    picture: String
+    picture: {
+        type: String
+    }
 })
 
 const Chat = mongoose.model('chats', chatSchema);
