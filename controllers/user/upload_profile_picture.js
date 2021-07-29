@@ -1,5 +1,6 @@
 const { uploadFile } = require('../../configs/aws_s3');
 const User = require('../../model/user_schema');
+const resizeImg = require('resize-img');
 const fs = require('fs');
 const util = require('util');
 const unlinkFile = util.promisify(fs.unlink);
@@ -8,9 +9,21 @@ exports.uploadProfilePicture = async (req, res) => {
     const photo = req.file;
     const userId = req.body.userId;
 
-    try {
-        const result = await uploadFile(photo);
+    if (photo.size > 10486000) {
+        return res.status(400).json({
+            error: 'Please Upload a picture that is less than 10MB in size!'
+        })
+    }
 
+    try {
+        const image = await resizeImg(fs.readFileSync(photo.path), {
+            width: 650,
+            height: 400
+        });
+
+        await fs.writeFileSync(photo.path, image);
+
+        const result = await uploadFile(photo);
         await unlinkFile(photo.path);
 
         await User.updateOne(
