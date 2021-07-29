@@ -8,6 +8,16 @@ const unlinkFile = util.promisify(fs.unlink);
 exports.uploadProfilePicture = async (req, res) => {
     const photo = req.file;
     const userId = req.body.userId;
+    let photoHeight = req.body.height;
+    let photoWidth = req.body.width;
+
+    if (photoHeight > photoWidth) {
+        photoHeight = photoHeight * 400 / photoWidth;
+        photoWidth = 400;
+    } else {
+        photoWidth = photoWidth * 400 / photoHeight;
+        photoHeight = 400;
+    }
 
     if (photo.size > 10486000) {
         return res.status(400).json({
@@ -17,8 +27,8 @@ exports.uploadProfilePicture = async (req, res) => {
 
     try {
         const image = await resizeImg(fs.readFileSync(photo.path), {
-            width: 650,
-            height: 400
+            width: photoWidth,
+            height: photoHeight
         });
 
         await fs.writeFileSync(photo.path, image);

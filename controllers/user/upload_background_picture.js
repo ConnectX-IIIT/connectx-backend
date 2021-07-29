@@ -8,6 +8,16 @@ const unlinkFile = util.promisify(fs.unlink);
 exports.uploadBackgroundImage = async (req, res) => {
     const coverPhoto = req.file;
     const userId = req.body.userId;
+    let coverPhotoHeight = req.body.height;
+    let coverPhotoWidth = req.body.width;
+
+    if (coverPhotoHeight > coverPhotoWidth) {
+        coverPhotoHeight = coverPhotoHeight * 400 / coverPhotoWidth;
+        coverPhotoWidth = 400;
+    } else {
+        coverPhotoWidth = coverPhotoWidth * 400 / coverPhotoHeight;
+        coverPhotoHeight = 400;
+    }
 
     if (coverPhoto.size > 10486000) {
         return res.status(400).json({
@@ -17,8 +27,8 @@ exports.uploadBackgroundImage = async (req, res) => {
 
     try {
         const image = await resizeImg(fs.readFileSync(coverPhoto.path), {
-            width: 650,
-            height: 400
+            width: coverPhotoWidth,
+            height: coverPhotoHeight
         });
 
         await fs.writeFileSync(coverPhoto.path, image);
