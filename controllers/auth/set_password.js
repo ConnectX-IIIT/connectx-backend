@@ -1,4 +1,5 @@
 const User = require('../../model/user_schema');
+const bcrypt = require('bcrypt');
 const { passwordValidate } = require('../../helper/password_validator');
 
 exports.setPassword = async (req, res) => {
