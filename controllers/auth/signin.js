@@ -30,14 +30,14 @@ exports.signIn = async (req, res) => {
 
         const token = await jwt.sign(
             {
-                userId: user._id,
+                userId: userDetails._id,
                 email: email
             },
             process.env.SECRET_KEY
         );
 
         return res.status(200).json({
-            userData: user,
+            userData: userDetails,
             token: `${token}`
         })
 
