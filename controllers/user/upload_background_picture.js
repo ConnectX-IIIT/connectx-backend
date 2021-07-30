@@ -7,7 +7,7 @@ const unlinkFile = util.promisify(fs.unlink);
 
 exports.uploadBackgroundImage = async (req, res) => {
     const coverPhoto = req.file;
-    const userId = req.body.userId;
+    const userId = req.userId;
     let coverPhotoHeight = req.body.height;
     let coverPhotoWidth = req.body.width;
 

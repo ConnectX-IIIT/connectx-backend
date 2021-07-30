@@ -7,7 +7,7 @@ const unlinkFile = util.promisify(fs.unlink);
 
 exports.uploadProfilePicture = async (req, res) => {
     const photo = req.file;
-    const userId = req.body.userId;
+    const userId = req.userId;
     let photoHeight = req.body.height;
     let photoWidth = req.body.width;
 
