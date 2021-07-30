@@ -6,7 +6,7 @@ exports.verifyToken = async (req, res, next) => {
 
     if (!token) {
         return res.status(404).json({
-            message: "Token not found",
+            error: "Token not found",
         });
     }
 
@@ -20,7 +20,7 @@ exports.verifyToken = async (req, res, next) => {
 
         if (!userDetails) {
             return res.status(400).json({
-                message: "Invalid token",
+                error: "Invalid token",
             });
         }
 
@@ -30,7 +30,7 @@ exports.verifyToken = async (req, res, next) => {
 
     } catch (err) {
         return res.status(500).json({
-            message: `${err}`,
+            error: `${err}`,
         });
     }
 
