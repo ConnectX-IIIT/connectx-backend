@@ -21,8 +21,7 @@ exports.googleSignup = async (req, res) => {
                 })
             }
 
-            const password = null;
-            const newUser = new User({ name, email, password, isMailVerified: true });
+            const newUser = new User({ name, email, isMailVerified: true });
             await newUser.save();
 
             const token = await jwt.sign(
