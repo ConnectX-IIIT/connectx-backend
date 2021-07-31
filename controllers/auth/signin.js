@@ -33,7 +33,10 @@ exports.signIn = async (req, res) => {
                 userId: userDetails._id,
                 email: email
             },
-            process.env.SECRET_KEY
+            process.env.SECRET_KEY,
+            {
+                expiresIn: 60 * 60 * 24
+            }
         );
 
         return res.status(200).json({

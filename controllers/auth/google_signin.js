@@ -26,7 +26,10 @@ exports.googleSignin = async (req, res) => {
                     userId: user._id,
                     email: user.email
                 },
-                process.env.SECRET_KEY
+                process.env.SECRET_KEY,
+                {
+                    expiresIn: 60 * 60 * 24
+                }
             );
 
             return res.status(200).json({

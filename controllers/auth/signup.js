@@ -60,7 +60,10 @@ exports.signUp = async (req, res) => {
                 userId: user._id,
                 email: email
             },
-            process.env.SECRET_KEY
+            process.env.SECRET_KEY,
+            {
+                expiresIn: 60 * 60 * 24
+            }
         );
 
         let link = baseurl_for_user_verification + token;

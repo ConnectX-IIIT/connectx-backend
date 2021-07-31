@@ -29,7 +29,10 @@ exports.googleSignup = async (req, res) => {
                     userId: newUser._id,
                     email: newUser.email
                 },
-                process.env.SECRET_KEY
+                process.env.SECRET_KEY,
+                {
+                    expiresIn: 60 * 60 * 24
+                }
             );
 
             return res.status(200).json({
