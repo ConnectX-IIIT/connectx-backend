@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const decode = require('jwt-decode');
 const User = require("../model/user_schema");
 
 exports.verifyToken = async (req, res, next) => {
@@ -11,8 +12,15 @@ exports.verifyToken = async (req, res, next) => {
     }
 
     try {
-        const decoded = await jwt.verify(token, process.env.SECRET_KEY);
+        const { exp } = decode(token);
 
+        if (Date.now() >= exp * 1000) {
+            return res.status(405).json({
+                error: 'Your session has expired, please login again!'
+            })
+        }
+
+        const decoded = await jwt.verify(token, process.env.SECRET_KEY);
         const userEmail = decoded.email;
         const userId = decoded.userId;
 
