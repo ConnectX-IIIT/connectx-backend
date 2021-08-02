@@ -11,7 +11,7 @@ AWS.config.update({
     region: process.env.AWS_BUCKET_REGION,
 });
 
-const s3 = new AWS.S3();
+const s3 = new AWS.S3({ apiVersion: '2006-03-01' });
 
 exports.uploadFile = (file) => {
     const fileStream = fs.createReadStream(file.path);
