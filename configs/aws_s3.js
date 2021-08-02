@@ -14,11 +14,7 @@ AWS.config.update({
     region: process.env.AWS_BUCKET_REGION,
 });
 
-const s3 = new S3({
-    region,
-    accessKeyId,
-    secretAccessKey
-})
+const s3 = new AWS.S3();
 
 exports.uploadFile = (file) => {
     const fileStream = fs.createReadStream(file.path);
