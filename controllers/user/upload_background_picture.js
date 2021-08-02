@@ -31,7 +31,9 @@ exports.uploadBackgroundImage = async (req, res) => {
 
         await fs.writeFileSync(coverPhoto.path, image);
 
-        const result = await uploadFile(coverPhoto);
+        const fileStream = fs.createReadStream(coverPhoto.path);
+        const result = await uploadFile(coverPhoto, fileStream);
+        fileStream.destroy();
 
         await fs.unlinkSync(coverPhoto.path);
 

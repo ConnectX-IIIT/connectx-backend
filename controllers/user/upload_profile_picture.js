@@ -31,7 +31,9 @@ exports.uploadProfilePicture = async (req, res) => {
 
         await fs.writeFileSync(photo.path, image);
 
-        const result = await uploadFile(photo);
+        const fileStream = fs.createReadStream(photo.path);
+        const result = await uploadFile(photo, fileStream);
+        fileStream.destroy();
 
         await fs.unlinkSync(photo.path);
 
