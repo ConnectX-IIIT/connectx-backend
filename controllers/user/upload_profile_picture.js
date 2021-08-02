@@ -2,8 +2,6 @@ const { uploadFile } = require('../../configs/aws_s3');
 const User = require('../../model/user_schema');
 const resizeImg = require('resize-img');
 const fs = require('fs');
-const util = require('util');
-const unlinkFile = util.promisify(fs.unlink);
 
 exports.uploadProfilePicture = async (req, res) => {
     const photo = req.file;
@@ -34,7 +32,8 @@ exports.uploadProfilePicture = async (req, res) => {
         await fs.writeFileSync(photo.path, image);
 
         const result = await uploadFile(photo);
-        await unlinkFile(photo.path);
+
+        await fs.unlinkSync(photo.path);
 
         await User.updateOne(
             { _id: userId }, {
@@ -48,6 +47,7 @@ exports.uploadProfilePicture = async (req, res) => {
         })
 
     } catch (error) {
+        console.log(error);
         return res.status(500).json({
             error: `Server error occured!`
         })

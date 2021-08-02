@@ -2,8 +2,6 @@ const { uploadFile } = require('../../configs/aws_s3');
 const User = require('../../model/user_schema');
 const resizeImg = require('resize-img');
 const fs = require('fs');
-const util = require('util');
-const unlinkFile = util.promisify(fs.unlink);
 
 exports.uploadBackgroundImage = async (req, res) => {
     const coverPhoto = req.file;
@@ -34,7 +32,8 @@ exports.uploadBackgroundImage = async (req, res) => {
         await fs.writeFileSync(coverPhoto.path, image);
 
         const result = await uploadFile(coverPhoto);
-        await unlinkFile(coverPhoto.path);
+
+        await fs.unlinkSync(coverPhoto.path);
 
         await User.updateOne(
             { _id: userId }, {
