@@ -1,12 +1,9 @@
-const S3 = require('aws-sdk/clients/s3');
+const AWS = require("aws-sdk");
 const fs = require('fs');
 require('dotenv').config();
 
 const bucketNameUpload = process.env.AWS_BUCKET_NAME_UPLOAD
 const bucketNameDownload = process.env.AWS_BUCKET_NAME_DOWNLOAD
-const region = process.env.AWS_BUCKET_REGION
-const accessKeyId = process.env.AWS_ACCESS_KEY
-const secretAccessKey = process.env.AWS_SECRET_KEY
 
 AWS.config.update({
     accessKeyId: process.env.AWS_ACCESS_KEY,
