@@ -19,28 +19,81 @@ exports.uploadFile = (file, fileStream) => {
     const uploadParams = {
         Bucket: bucketNameUpload,
         Body: fileStream,
-        Key: file.filename
+        Key: file.filename,
     }
 
     return s3.upload(uploadParams).promise()
 }
 
-exports.getFileStream = (fileKey) => {
+exports.getFileStream = async (fileKey) => {
 
-    const downloadParams = {
-        Key: fileKey,
-        Bucket: bucketNameDownload
+    try {
+        const exists = await s3
+            .headObject({
+                Bucket: bucketNameDownload,
+                Key: fileKey,
+            })
+            .promise()
+            .then(
+                () => true,
+                err => {
+                    if (err) {
+                        return false;
+                    }
+                    throw err;
+                }
+            );
+
+        if (exists) {
+
+            const downloadParams = {
+                Key: fileKey,
+                Bucket: bucketNameDownload
+            }
+            return s3.getObject(downloadParams).createReadStream();
+
+        } else {
+            return null;
+        }
+
+    } catch (e) {
+        return null;
     }
-
-    return s3.getObject(downloadParams).createReadStream()
 }
 
-exports.removeFile = (fileKey) => {
+exports.removeFile = async (fileKey) => {
 
-    const deleteParams = {
-        Key: fileKey,
-        Bucket: bucketNameDownload
+    try {
+        const exists = await s3
+            .headObject({
+                Bucket: bucketNameDownload,
+                Key: fileKey,
+            })
+            .promise()
+            .then(
+                () => true,
+                error => {
+                    if (error) {
+                        return false;
+                    }
+                    throw err;
+                }
+            );
+
+        if (exists) {
+
+            const deleteParams = {
+                Key: fileKey,
+                Bucket: bucketNameDownload
+            }
+            return s3.deleteObject(deleteParams).promise();
+
+        } else {
+            return null;
+        }
+
+    } catch (e) {
+        return null;
     }
 
-    return s3.deleteObject(deleteParams).promise()
 }
