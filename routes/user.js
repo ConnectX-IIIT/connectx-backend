@@ -3,8 +3,7 @@ const multer = require('multer');
 const { getDetails } = require("../controllers/user/get_details");
 const { getImage } = require("../controllers/user/get_image");
 const { removeImage } = require("../controllers/user/remove_image");
-const { uploadBackgroundImage } = require("../controllers/user/upload_background_picture");
-const { uploadProfilePicture } = require("../controllers/user/upload_profile_picture");
+const { uploadPicture } = require("../controllers/user/upload_picture");
 const { verifyToken } = require("../middlewares/auth_middleware");
 
 const upload = multer({ dest: 'assets' });
@@ -13,7 +12,6 @@ const router = express.Router();
 router.get('/getdetails', verifyToken, getDetails);
 router.get('/fetch/:key', getImage);
 router.get('/remove/:key', removeImage);
-router.route('/uploadprofile').post(verifyToken, upload.single('photo'), uploadProfilePicture);
-router.route('/uploadbackground').post(verifyToken, upload.single('coverPhoto'), uploadBackgroundImage);
+router.route('/upload').post(verifyToken, upload.single('photo'), uploadPicture);
 
 module.exports = router;

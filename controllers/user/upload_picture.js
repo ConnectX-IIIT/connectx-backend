@@ -3,11 +3,12 @@ const User = require('../../model/user_schema');
 const resizeImg = require('resize-img');
 const fs = require('fs');
 
-exports.uploadProfilePicture = async (req, res) => {
+exports.uploadPicture = async (req, res) => {
     const photo = req.file;
     const userId = req.userId;
     let photoHeight = req.body.height;
     let photoWidth = req.body.width;
+    let photoType = req.body.type;
 
     if (photoHeight > photoWidth) {
         photoHeight = photoHeight * 400 / photoWidth;
@@ -37,19 +38,27 @@ exports.uploadProfilePicture = async (req, res) => {
 
         await fs.unlinkSync(photo.path);
 
-        await User.updateOne(
-            { _id: userId }, {
-            $set: {
-                profilePicture: result.Key,
-            }
-        });
+        if (photoType == "true") {
+            await User.updateOne(
+                { _id: userId }, {
+                $set: {
+                    profilePicture: result.Key,
+                }
+            });
+        } else {
+            await User.updateOne(
+                { _id: userId }, {
+                $set: {
+                    backgroundPicture: result.Key,
+                }
+            });
+        }
 
         return res.status(200).json({
             message: 'Image uploaded successfully'
         })
 
     } catch (error) {
-        console.log(error);
         return res.status(500).json({
             error: `Server error occured!`
         })
