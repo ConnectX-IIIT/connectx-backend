@@ -42,6 +42,12 @@ const postSchema = new mongoose.Schema({
     },
     attachedImages: {
         type: Array
+    },
+    imageHeights: {
+        type: Array
+    },
+    imageWidths: {
+        type: Array
     }
 
 })
