@@ -7,6 +7,6 @@ const router = express.Router();
 
 router.get("/search/:key", verifyToken, search);
 router.get("/posts", verifyToken, getPost);
-router.get("/addpost", verifyToken, addPost);
+router.post("/addpost", verifyToken, addPost);
 
 module.exports = router;
