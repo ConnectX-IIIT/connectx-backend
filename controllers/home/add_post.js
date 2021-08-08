@@ -45,10 +45,13 @@ exports.addPost = async (req, res) => {
         const post = new Post({ user: userId, title, description, isProject, jobLink, userName, userProfile, attachedImages, timestamp: Date.now() });
         await post.save();
 
+        return res.status(200).json({
+            message: `Post added successfully!`,
+        });
+
     } catch (err) {
         return res.status(500).json({
             error: `Server error occured!`,
         });
     }
-    console.log(attachedImages);
 }
