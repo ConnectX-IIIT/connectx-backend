@@ -18,12 +18,6 @@ exports.uploadPicture = async (req, res) => {
         photoHeight = 400;
     }
 
-    if (photo.size > 10486000) {
-        return res.status(400).json({
-            error: 'Please Upload a picture that is less than 10MB in size!'
-        })
-    }
-
     try {
         const image = await resizeImg(fs.readFileSync(photo.path), {
             width: photoWidth,
