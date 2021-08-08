@@ -45,6 +45,13 @@ exports.addPost = async (req, res) => {
         const post = new Post({ user: userId, title, description, isProject, jobLink, userName, userProfile, attachedImages, timestamp: Date.now() });
         await post.save();
 
+        await User.updateOne(
+            { _id: userId }, {
+            $push: {
+                posts: post._id,
+            }
+        });
+
         return res.status(200).json({
             message: `Post added successfully!`,
         });
