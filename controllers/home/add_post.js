@@ -42,7 +42,7 @@ exports.addPost = async (req, res) => {
             await fs.unlinkSync(photo.path);
         }
 
-        const post = new Post({ user: userId, title, description, isProject, jobLink, userName, userProfile, attachedImages, timestamp: Date.now() });
+        const post = new Post({ user: userId, title, description, reactions: 0, isProject, jobLink, userName, userProfile, attachedImages, timestamp: Date.now() });
         await post.save();
 
         await User.updateOne(
