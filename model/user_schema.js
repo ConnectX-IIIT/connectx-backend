@@ -58,6 +58,30 @@ const userSchema = new mongoose.Schema({
     chats: {
         type: Array
     },
+    upvotedPosts: {
+        type: Array
+    },
+    downvotedPosts: {
+        type: Array
+    },
+    upvotedQuestions: {
+        type: Array
+    },
+    downvotedQuestions: {
+        type: Array
+    },
+    upvotedAnswers: {
+        type: Array
+    },
+    downvotedAnswers: {
+        type: Array
+    },
+    upvotedDiscussions: {
+        type: Array
+    },
+    downvotedDiscussions: {
+        type: Array
+    },
     posts: {
         type: Array
     },
