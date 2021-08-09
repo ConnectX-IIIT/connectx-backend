@@ -31,13 +31,16 @@ const postSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    reactions: {
-        type: Number
-    },
     discussions: {
         type: Array
     },
     reports: {
+        type: Array
+    },
+    upvotedUsers: {
+        type: Array
+    },
+    downvotedUsers: {
         type: Array
     },
     attachedImages: {
