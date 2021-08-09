@@ -11,38 +11,28 @@ exports.addPost = async (req, res) => {
     const jobLink = req.body.jobLink;
     const photos = req.files;
     let attachedImages = [];
-    let i = 0;
     let userName;
     let userProfile;
-    // const imageHeights = req.body.imageHeights;
-    // const imageWidths = req.body.imageWidths;
-
-    // if ( photoWidth > 1500) {
-    //     photoHeight = photoHeight * 400 / photoWidth;
-    //     photoWidth = 400;
-    // }
 
     try {
         const userDetails = await User.findOne({ _id: userId });
         userName = userDetails.name;
         userProfile = userDetails.profilePicture;
 
-        for (let photo of photos) {
+        for (let i = 0; i < photos.length; i = i + 1) {
 
-            const image = await fs.readFileSync(photo.path);
-            await fs.writeFileSync(photo.path, image);
+            const image = await fs.readFileSync(photos[i].path);
+            await fs.writeFileSync(photos[i].path, image);
 
-            const fileStream = fs.createReadStream(photo.path);
-            const result = await uploadFile(photo, fileStream);
+            const fileStream = fs.createReadStream(photos[i].path);
+            const result = await uploadFile(photos[i], fileStream);
             fileStream.destroy();
 
             attachedImages[i] = result.key;
-            i++;
-
-            await fs.unlinkSync(photo.path);
+            await fs.unlinkSync(photos[i].path);
         }
 
-        const post = new Post({ user: userId, title, description, reactions: 0, isProject, jobLink, userName, userProfile, attachedImages, timestamp: Date.now() });
+        const post = new Post({ user: userId, title, description, isProject, jobLink, userName, userProfile, attachedImages, timestamp: Date.now() });
         await post.save();
 
         await User.updateOne(
