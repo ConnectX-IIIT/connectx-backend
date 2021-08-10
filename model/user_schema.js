@@ -85,6 +85,9 @@ const userSchema = new mongoose.Schema({
     posts: {
         type: Array
     },
+    discussions: {
+        type: Array
+    },
     questions: {
         type: Array
     }
