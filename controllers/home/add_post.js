@@ -38,7 +38,7 @@ exports.addPost = async (req, res) => {
         await User.updateOne(
             { _id: userId }, {
             $push: {
-                posts: post._id,
+                posts: post._id.toString(),
             }
         });
 
