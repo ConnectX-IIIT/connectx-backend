@@ -12,7 +12,7 @@ exports.getPosts = async (req, res) => {
         const projectPosts = await Post.find({ isProject: true }).sort({ "timestamp": -1 });
 
         return res.status(200).json({
-            postData: jobPosts.concat(projectPosts).concat(blogPosts)
+            postData: posts
         })
 
     } catch (err) {
