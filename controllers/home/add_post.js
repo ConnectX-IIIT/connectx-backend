@@ -9,7 +9,7 @@ exports.addPost = async (req, res) => {
     const description = req.body.description;
     const isProject = req.body.isProject;
     const jobLink = req.body.jobLink;
-    const photos = req.files;
+    // const photos = req.files;
     let attachedImages = [];
     let userName;
     let userProfile;
@@ -19,18 +19,18 @@ exports.addPost = async (req, res) => {
         userName = userDetails.name;
         userProfile = userDetails.profilePicture;
 
-        for (let i = 0; i < photos.length; i = i + 1) {
+        // for (let i = 0; i < photos.length; i = i + 1) {
 
-            const image = await fs.readFileSync(photos[i].path);
-            await fs.writeFileSync(photos[i].path, image);
+        //     const image = await fs.readFileSync(photos[i].path);
+        //     await fs.writeFileSync(photos[i].path, image);
 
-            const fileStream = fs.createReadStream(photos[i].path);
-            const result = await uploadFile(photos[i], fileStream);
-            fileStream.destroy();
+        //     const fileStream = fs.createReadStream(photos[i].path);
+        //     const result = await uploadFile(photos[i], fileStream);
+        //     fileStream.destroy();
 
-            attachedImages[i] = result.key;
-            await fs.unlinkSync(photos[i].path);
-        }
+        //     attachedImages[i] = result.key;
+        //     await fs.unlinkSync(photos[i].path);
+        // }
 
         const post = new Post({ user: userId, title, description, isProject, jobLink, userName, userProfile, attachedImages, timestamp: Date.now() });
         await post.save();
@@ -38,7 +38,7 @@ exports.addPost = async (req, res) => {
         await User.updateOne(
             { _id: userId }, {
             $push: {
-                posts: post._id,
+                posts: post._id.toString(),
             }
         });
 
