@@ -9,14 +9,24 @@ const discussionSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    content: {
+        type: String,
+        required: true
+    },
     timestamp: {
         type: Number,
         required: true
     },
-    upvotes: {
-        type: Number
-    },
     reports: {
+        type: Array
+    },
+    replies: {
+        type: Array
+    },
+    upvotedUsers: {
+        type: Array
+    },
+    downvotedUsers: {
         type: Array
     },
     reference: {
