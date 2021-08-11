@@ -23,6 +23,9 @@ const postSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    reactions: {
+        type: Number
+    },
     userName: {
         type: String,
         required: true
