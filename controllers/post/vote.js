@@ -20,6 +20,9 @@ exports.vote = async (req, res) => {
                     { _id: postId }, {
                     $push: {
                         upvotedUsers: userId,
+                    },
+                    $inc: {
+                        reactions: 1
                     }
                 });
 
@@ -35,6 +38,9 @@ exports.vote = async (req, res) => {
                     { _id: postId }, {
                     $pull: {
                         upvotedUsers: userId,
+                    },
+                    $inc: {
+                        reactions: -1
                     }
                 });
 
@@ -50,6 +56,9 @@ exports.vote = async (req, res) => {
                     { _id: postId }, {
                     $push: {
                         downvotedUsers: userId,
+                    },
+                    $inc: {
+                        reactions: -1
                     }
                 });
 
@@ -65,6 +74,9 @@ exports.vote = async (req, res) => {
                     { _id: postId }, {
                     $pull: {
                         downvotedUsers: userId,
+                    },
+                    $inc: {
+                        reactions: 1
                     }
                 });
 
