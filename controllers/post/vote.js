@@ -95,7 +95,7 @@ exports.vote = async (req, res) => {
         const postDetails = await Post.findOne({ _id: postId });
 
         return res.status(200).json({
-            reactions: postDetails.reactions;
+            reactions: postDetails.reactions
         })
 
     } catch (error) {
