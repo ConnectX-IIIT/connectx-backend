@@ -10,7 +10,7 @@ const router = express.Router();
 
 router.post("/vote/:key", verifyToken, vote);
 router.get("/remove/:key", verifyToken, removePost);
-router.get("/getposts", verifyToken, getPosts);
+router.get("/getposts/:key", verifyToken, getPosts);
 router.post("/adddiscussion", verifyToken, addDiscussion);
 router.get("/getdiscussions", verifyToken, getDiscussions);
 
