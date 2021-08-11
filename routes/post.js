@@ -12,6 +12,6 @@ router.post("/vote/:key", verifyToken, vote);
 router.get("/remove/:key", verifyToken, removePost);
 router.get("/getposts/:key", verifyToken, getPosts);
 router.post("/adddiscussion", verifyToken, addDiscussion);
-router.get("/getdiscussions", verifyToken, getDiscussions);
+router.post("/getdiscussions", verifyToken, getDiscussions);
 
 module.exports = router;
