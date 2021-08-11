@@ -2,14 +2,10 @@ const Post = require("../../model/post_schema");
 
 exports.getPosts = async (req, res) => {
 
+    const typeOfPosts = req.params.key;
+
     try {
-        const posts = await Post.find().sort({ "timestamp": -1 });
-        const notBlogPosts = await Post.find({ $or: [{ isProject: true }, { jobLink: { $ne: "" } }] }).sort({ "timestamp": -1 });
-        const notProjectPosts = await Post.find({ isProject: false }).sort({ "timestamp": -1 });
-        const notJobPosts = await Post.find({ jobLink: "" }).sort({ "timestamp": -1 });
-        const jobPosts = await Post.find({ jobLink: { $ne: "" } }).sort({ "timestamp": -1 });
-        const blogPosts = await Post.find({ isProject: false, jobLink: "" }).sort({ "timestamp": -1 });
-        const projectPosts = await Post.find({ isProject: true }).sort({ "timestamp": -1 });
+        const posts = await getPostsByType(typeOfPosts);
 
         return res.status(200).json({
             postData: posts
@@ -19,5 +15,26 @@ exports.getPosts = async (req, res) => {
         return res.status(500).json({
             error: `Server error occured!`,
         });
+    }
+}
+
+async function getPostsByType(type) {
+    switch (type) {
+        case '1':
+            return Post.find().sort({ "timestamp": -1 });
+        case '2':
+            return Post.find({ $or: [{ isProject: true }, { jobLink: { $ne: "" } }] }).sort({ "timestamp": -1 });
+        case '3':
+            return Post.find({ isProject: false }).sort({ "timestamp": -1 });
+        case '4':
+            return Post.find({ jobLink: "" }).sort({ "timestamp": -1 });
+        case '5':
+            return Post.find({ jobLink: { $ne: "" } }).sort({ "timestamp": -1 });
+        case '6':
+            return Post.find({ isProject: false, jobLink: "" }).sort({ "timestamp": -1 });
+        case '7':
+            return Post.find({ isProject: true }).sort({ "timestamp": -1 });
+        default:
+            return [];
     }
 }
