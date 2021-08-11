@@ -93,10 +93,9 @@ exports.vote = async (req, res) => {
         }
 
         const postDetails = await Post.findOne({ _id: postId });
-        const reactions = postDetails.upvotedUsers.length - postDetails.downvotedUsers.length;
 
         return res.status(200).json({
-            reactions: reactions
+            reactions: postDetails.reactions;
         })
 
     } catch (error) {
