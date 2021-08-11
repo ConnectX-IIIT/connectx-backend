@@ -4,6 +4,9 @@ exports.getPosts = async (req, res) => {
 
     const typeOfPosts = req.params.key;
 
+    // db.demo33.aggregate({$unwind:"$ListOfStudent"}, { $group : {_id:'$_id', ct:{$sum:1}}}, { $sort :{ ct: -1}} );
+    // db.users.aggregate([{ $sort : { age : -1, posts: 1 } }])
+
     try {
         const posts = await getPostsByType(typeOfPosts);
 
