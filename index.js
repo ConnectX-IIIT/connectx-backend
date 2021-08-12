@@ -4,6 +4,7 @@ const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/user');
 const homeRoutes = require('./routes/home');
 const postRoutes = require('./routes/post');
+const discussionRoutes = require('./routes/discussion');
 require('dotenv').config();
 require('./configs/database');
 
@@ -24,5 +25,6 @@ app.use('/auth', authRoutes);
 app.use('/user', userRoutes);
 app.use('/home', homeRoutes);
 app.use('/post', postRoutes);
+app.use('/discussion', discussionRoutes);
 
 app.listen(port);
