@@ -1,3 +1,5 @@
+const Discussion = require("../../model/discussion_schema");
+const Post = require("../../model/post_schema");
 const User = require("../../model/user_schema");
 
 exports.removeDiscussion = async (req, res) => {
@@ -21,13 +23,68 @@ exports.removeDiscussion = async (req, res) => {
             });
         }
 
-        const discussion = await Discussion.find({ _id: discussionId });
+        const discussion = await Discussion.findOne({ _id: discussionId });
+
+        if (discussion.reference) {
+            await Discussion.updateOne(
+                { _id: discussion.reference },
+                {
+                    $pull: {
+                        replies: discussionId,
+                    },
+                }
+            );
+        } else {
+            const discussions = await Discussion.find({ _id: { $in: discussion.replies } });
+
+            for (let discussion of discussions) {
+
+                await User.updateOne(
+                    { _id: discussion.user },
+                    {
+                        $pull: {
+                            discussions: discussion._id.toString(),
+                        },
+                    }
+                );
+
+                await User.updateMany(
+                    { _id: { $in: discussion.upvotedUsers } },
+                    {
+                        $pull: {
+                            upvotedDiscussions: discussion._id.toString(),
+                        },
+                    }
+                );
+
+                await User.updateMany(
+                    { _id: { $in: discussion.downvotedUsers } },
+                    {
+                        $pull: {
+                            downvotedDiscussions: discussion._id.toString(),
+                        },
+                    }
+                );
+            }
+
+
+            await Discussion.deleteMany({ _id: { $in: discussion.replies } });
+
+            await Post.updateMany(
+                { _id: discussion.postId },
+                {
+                    $pull: {
+                        discussions: discussionId,
+                    },
+                }
+            );
+        }
 
         await User.updateMany(
             { _id: { $in: discussion.upvotedUsers } },
             {
                 $pull: {
-                    upvotedDiscussions: discussion._id,
+                    upvotedDiscussions: discussionId,
                 },
             }
         );
@@ -36,7 +93,7 @@ exports.removeDiscussion = async (req, res) => {
             { _id: { $in: discussion.downvotedUsers } },
             {
                 $pull: {
-                    downvotedDiscussions: discussion._id,
+                    downvotedDiscussions: discussionId,
                 },
             }
         );
@@ -44,7 +101,7 @@ exports.removeDiscussion = async (req, res) => {
         await Discussion.deleteOne({ _id: discussionId });
 
         return res.status(200).json({
-            message: `Post removed!`,
+            message: `Discussion removed!`,
         });
 
     } catch (error) {
