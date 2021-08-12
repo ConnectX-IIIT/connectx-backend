@@ -7,7 +7,7 @@ exports.vote = async (req, res) => {
     const userId = req.userId;
     const typeOfVote = req.params.key;
 
-    if (!typeOfVote) {
+    if (!postId) {
         return res.status(400).json({
             error: "Server error occured!"
         })
@@ -15,7 +15,7 @@ exports.vote = async (req, res) => {
 
     try {
         switch (typeOfVote) {
-            case 1:
+            case '1':
                 await Post.updateOne(
                     { _id: postId }, {
                     $push: {
@@ -33,7 +33,7 @@ exports.vote = async (req, res) => {
                     }
                 });
                 break;
-            case 2:
+            case '2':
                 await Post.updateOne(
                     { _id: postId }, {
                     $pull: {
@@ -51,7 +51,7 @@ exports.vote = async (req, res) => {
                     }
                 });
                 break;
-            case 3:
+            case '3':
                 await Post.updateOne(
                     { _id: postId }, {
                     $push: {
@@ -69,7 +69,7 @@ exports.vote = async (req, res) => {
                     }
                 });
                 break;
-            case 4:
+            case '4':
                 await Post.updateOne(
                     { _id: postId }, {
                     $pull: {

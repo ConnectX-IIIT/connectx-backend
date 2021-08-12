@@ -15,7 +15,7 @@ exports.vote = async (req, res) => {
 
     try {
         switch (typeOfVote) {
-            case 1:
+            case '1':
                 await Discussion.updateOne(
                     { _id: discussionId }, {
                     $push: {
@@ -33,7 +33,7 @@ exports.vote = async (req, res) => {
                     }
                 });
                 break;
-            case 2:
+            case '2':
                 await Discussion.updateOne(
                     { _id: discussionId }, {
                     $pull: {
@@ -51,7 +51,7 @@ exports.vote = async (req, res) => {
                     }
                 });
                 break;
-            case 3:
+            case '3':
                 await Discussion.updateOne(
                     { _id: discussionId }, {
                     $push: {
@@ -69,7 +69,7 @@ exports.vote = async (req, res) => {
                     }
                 });
                 break;
-            case 4:
+            case '4':
                 await Discussion.updateOne(
                     { _id: discussionId }, {
                     $pull: {
