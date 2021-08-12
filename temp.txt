@@ -1,0 +1,16 @@
+vote  >> 95 udani hai >> faltu ki request
+auth >> register ka nam tatti hai
+signup & signin>> expiry session 2-3 months min
+
+{
+    const userDetails = await User.findOne({ email: userEmail });
+
+    if (!userDetails) {
+        return res.status(401).json({
+            error: 'Enter a valid email!'
+        })
+    }
+
+
+    yeh tatti har jagah ki hai
+}
