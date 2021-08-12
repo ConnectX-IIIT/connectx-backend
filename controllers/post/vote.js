@@ -3,9 +3,9 @@ const User = require("../../model/user_schema");
 
 exports.vote = async (req, res) => {
 
-    const postId = req.params.key;
+    const postId = req.body.postId;
     const userId = req.userId;
-    const typeOfVote = req.body.type;
+    const typeOfVote = req.params.key;
 
     if (!typeOfVote) {
         return res.status(400).json({
