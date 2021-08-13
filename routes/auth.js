@@ -3,7 +3,7 @@ const { forgotPassword } = require("../controllers/auth/forgot_password");
 const router = express.Router();
 const { googleSignin } = require("../controllers/auth/google_signin");
 const { googleSignup } = require("../controllers/auth/google_signup");
-const { register } = require("../controllers/auth/register");
+const { addExtraDetails } = require("../controllers/auth/register");
 const { resetPassword } = require("../controllers/auth/reset_password");
 const { setPassword } = require("../controllers/auth/set_password");
 const { signIn } = require("../controllers/auth/signin");
@@ -13,7 +13,7 @@ const { verifyToken } = require("../middlewares/auth_middleware");
 
 router.post("/signup", signUp);
 router.post("/signin", signIn);
-router.post("/register", register);
+router.post("/addextradetails", addExtraDetails);
 router.post("/forgotpassword", forgotPassword);
 router.post("/resetpassword", resetPassword);
 router.post("/googlesignin", googleSignin);
