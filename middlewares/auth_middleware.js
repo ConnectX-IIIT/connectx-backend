@@ -7,7 +7,7 @@ exports.verifyToken = async (req, res, next) => {
 
     if (!token) {
         return res.status(404).json({
-            error: "Token not found",
+            error: "Token not found!",
         });
     }
 
@@ -27,8 +27,8 @@ exports.verifyToken = async (req, res, next) => {
         const userDetails = await User.findOne({ email: userEmail });
 
         if (!userDetails) {
-            return res.status(400).json({
-                error: "Invalid token",
+            return res.status(406).json({
+                error: "Invalid token!",
             });
         }
 
@@ -38,7 +38,7 @@ exports.verifyToken = async (req, res, next) => {
 
     } catch (err) {
         return res.status(500).json({
-            error: `${err}`,
+            error: `Server error occured!`,
         });
     }
 
