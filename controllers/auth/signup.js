@@ -62,7 +62,7 @@ exports.signUp = async (req, res) => {
             },
             process.env.SECRET_KEY,
             {
-                expiresIn: 60 * 60 * 24
+                expiresIn: "30d"
             }
         );
 
