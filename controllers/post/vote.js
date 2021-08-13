@@ -92,10 +92,8 @@ exports.vote = async (req, res) => {
                 break;
         }
 
-        const postDetails = await Post.findOne({ _id: postId });
-
         return res.status(200).json({
-            reactions: postDetails.reactions
+            message: `Post upvoted successfully!`
         })
 
     } catch (error) {

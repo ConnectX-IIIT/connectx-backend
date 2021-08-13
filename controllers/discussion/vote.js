@@ -92,10 +92,8 @@ exports.vote = async (req, res) => {
                 break;
         }
 
-        const discussionDetails = await Discussion.findOne({ _id: discussionId });
-
         return res.status(200).json({
-            reactions: discussionDetails.reactions
+            message: `Discussion upvoted successfully!`
         })
 
     } catch (error) {
