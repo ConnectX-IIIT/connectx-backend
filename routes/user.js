@@ -11,7 +11,7 @@ const router = express.Router();
 
 router.get('/getdetails', verifyToken, getDetails);
 router.get('/fetch/:key', getImage);
-router.post('/remove/:key', removeImage);
+router.post('/remove/:key', verifyToken, removeImage);
 router.route('/upload').post(verifyToken, upload.single('photo'), uploadPicture);
 
 module.exports = router;
