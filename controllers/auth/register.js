@@ -1,12 +1,12 @@
 const User = require('../../model/user_schema');
 require('dotenv').config();
 
-exports.register = async (req, res) => {
+exports.addExtraDetails = async (req, res) => {
     const { mobile, batch, joiningYear, gender, passingYear, description, isAlumni, userId } = req.body;
 
     if (!mobile || !batch || !joiningYear || !passingYear || !gender || !description) {
         return res.status(400).json({
-            error: 'Please fill all details properly'
+            error: 'Please fill all details properly!'
         })
     }
 
