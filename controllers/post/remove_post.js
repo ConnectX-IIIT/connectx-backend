@@ -2,6 +2,7 @@ const Discussion = require("../../model/discussion_schema");
 const Post = require("../../model/post_schema");
 const User = require("../../model/user_schema");
 const { removeFile } = require("../../configs/aws_s3");
+const { updateDatabaseToRemoveDiscussion } = require("../discussion/remove_discussion");
 
 exports.removePost = async (req, res) => {
     const postId = req.params.key;
@@ -51,32 +52,13 @@ exports.removePost = async (req, res) => {
         const discussions = await Discussion.find({ _id: { $in: post.discussions } });
 
         for (let discussion of discussions) {
-            await User.updateOne(
-                { _id: discussion.user },
-                {
-                    $pull: {
-                        discussions: discussion._id,
-                    },
-                }
-            );
+            const removeDiscussionRes = await updateDatabaseToRemoveDiscussion(discussion, discussion.user);
 
-            await User.updateMany(
-                { _id: { $in: discussion.upvotedUsers } },
-                {
-                    $pull: {
-                        upvotedDiscussions: discussion._id,
-                    },
-                }
-            );
-
-            await User.updateMany(
-                { _id: { $in: discussion.downvotedUsers } },
-                {
-                    $pull: {
-                        downvotedDiscussions: discussion._id,
-                    },
-                }
-            );
+            if (removeDiscussionRes[0] != 200) {
+                return res.status(401).json({
+                    error: `You can't remove this comment!`,
+                });
+            }
         }
 
         await Discussion.deleteMany({ _id: { $in: post.discussions } });
