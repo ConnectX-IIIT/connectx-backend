@@ -8,105 +8,117 @@ exports.removeDiscussion = async (req, res) => {
     const userId = req.userId;
 
     try {
-        const response = await User.updateOne(
-            { _id: userId },
-            {
-                $pull: {
-                    discussions: discussionId,
-                },
-            }
-        );
-
-        if (response.nModified === 0) {
-            return res.status(400).json({
-                error: `You can't remove this comment!`,
-            });
-        }
-
         const discussion = await Discussion.findOne({ _id: discussionId });
 
         if (discussion.reference) {
-            await Discussion.updateOne(
-                { _id: discussion.reference },
-                {
-                    $pull: {
-                        replies: discussionId,
-                    },
-                }
-            );
+            const removeReplyRes = await this.updateDatabaseToRemoveReply(discussion, userId);
+
+            if (removeReplyRes[0] != 200) {
+                return res.status(400).json({
+                    error: `You can't remove this comment!`,
+                });
+            }
         } else {
-            const discussions = await Discussion.find({ _id: { $in: discussion.replies } });
+            const removeDiscussionRes = await this.updateDatabaseToRemoveDiscussion(discussion, userId);
 
-            for (let discussion of discussions) {
-
-                await User.updateOne(
-                    { _id: discussion.user },
-                    {
-                        $pull: {
-                            discussions: discussion._id.toString(),
-                        },
-                    }
-                );
-
-                await User.updateMany(
-                    { _id: { $in: discussion.upvotedUsers } },
-                    {
-                        $pull: {
-                            upvotedDiscussions: discussion._id.toString(),
-                        },
-                    }
-                );
-
-                await User.updateMany(
-                    { _id: { $in: discussion.downvotedUsers } },
-                    {
-                        $pull: {
-                            downvotedDiscussions: discussion._id.toString(),
-                        },
-                    }
-                );
+            if (removeDiscussionRes[0] != 200) {
+                return res.status(400).json({
+                    error: `You can't remove this comment!`,
+                });
             }
-
-
-            await Discussion.deleteMany({ _id: { $in: discussion.replies } });
-
-            await Post.updateMany(
-                { _id: discussion.postId },
-                {
-                    $pull: {
-                        discussions: discussionId,
-                    },
-                }
-            );
         }
-
-        await User.updateMany(
-            { _id: { $in: discussion.upvotedUsers } },
-            {
-                $pull: {
-                    upvotedDiscussions: discussionId,
-                },
-            }
-        );
-
-        await User.updateMany(
-            { _id: { $in: discussion.downvotedUsers } },
-            {
-                $pull: {
-                    downvotedDiscussions: discussionId,
-                },
-            }
-        );
-
-        await Discussion.deleteOne({ _id: discussionId });
-
-        return res.status(200).json({
-            message: `Discussion removed!`,
-        });
 
     } catch (error) {
         return res.status(500).json({
             error: `Server error occcured!`,
         });
     }
+}
+
+exports.updateDatabaseToRemoveDiscussion = async (discussion, userId) => {
+    const response = await User.updateOne(
+        { _id: userId },
+        {
+            $pull: {
+                discussions: discussion._id.toString(),
+            },
+        }
+    );
+
+    if (response.nModified === 0) {
+        return [400, "You can't remove this comment!"];
+    }
+
+    const discussions = await Discussion.find({ _id: { $in: discussion.replies } });
+
+    for (let discussion of discussions) {
+        const removeReplyRes = await this.updateDatabaseToRemoveReply(discussion, discussion.user);
+
+        if (removeReplyRes[0] != 200) {
+            return [401, "You can't remove this comment!"];
+        }
+    }
+
+    await Post.updateOne(
+        { _id: discussion.postId },
+        {
+            $pull: {
+                discussions: discussion._id.toString(),
+            },
+        }
+    );
+
+    await this.updateDatabaseToRemoveVotedUsers(discussion);
+    await Discussion.deleteOne({ _id: discussion._id.toString() });
+
+    return [200, "Discussion removed!"];
+}
+
+exports.updateDatabaseToRemoveReply = async (discussion, userId) => {
+    const response = await User.updateOne(
+        { _id: userId },
+        {
+            $pull: {
+                discussions: discussion._id.toString(),
+            },
+        }
+    );
+
+    if (response.nModified === 0) {
+        return [400, "You can't remove this comment!"];
+    }
+
+    await Discussion.updateOne(
+        { _id: discussion.reference },
+        {
+            $pull: {
+                replies: discussion._id.toString(),
+            },
+        }
+    );
+
+    await this.updateDatabaseToRemoveVotedUsers(discussion);
+    await Discussion.deleteOne({ _id: discussion._id.toString() });
+
+    return [200, "Reply removed!"];
+}
+
+exports.updateDatabaseToRemoveVotedUsers = async (discussion) => {
+    await User.updateMany(
+        { _id: { $in: discussion.upvotedUsers } },
+        {
+            $pull: {
+                upvotedDiscussions: discussion._id.toString(),
+            },
+        }
+    );
+
+    await User.updateMany(
+        { _id: { $in: discussion.downvotedUsers } },
+        {
+            $pull: {
+                downvotedDiscussions: discussion._id.toString(),
+            },
+        }
+    );
 }
