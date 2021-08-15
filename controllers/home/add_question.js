@@ -7,6 +7,12 @@ exports.addQuestion = async (req, res) => {
     const userName = req.body.userName;
     const userProfile = req.body.userProfile;
 
+    if (!question) {
+        return res.status(400).json({
+            error: `You can't post empty question!`,
+        });
+    }
+
     try {
         const questionInstance = new Question({ user: userId, question, upvotes: 0, userName, userProfile, timestamp: Date.now() });
         await questionInstance.save();
