@@ -1,5 +1,4 @@
 const { S3 } = require("aws-sdk");
-const fs = require('fs');
 require('dotenv').config();
 
 const bucketNameUpload = process.env.AWS_BUCKET_NAME_UPLOAD
@@ -22,7 +21,8 @@ exports.uploadFile = (file, fileStream) => {
         Key: file.filename,
     }
 
-    return s3.upload(uploadParams).promise()
+    // return s3.upload(uploadParams).promise();
+    return;
 }
 
 exports.getFileStream = async (fileKey) => {
@@ -50,7 +50,8 @@ exports.getFileStream = async (fileKey) => {
                 Key: fileKey,
                 Bucket: bucketNameDownload
             }
-            return s3.getObject(downloadParams).createReadStream();
+            // return s3.getObject(downloadParams).createReadStream();
+            return;
 
         } else {
             return null;
@@ -86,7 +87,8 @@ exports.removeFile = async (fileKey) => {
                 Key: fileKey,
                 Bucket: bucketNameDownload
             }
-            return s3.deleteObject(deleteParams).promise();
+            // return s3.deleteObject(deleteParams).promise();
+            return;
 
         } else {
             return null;
