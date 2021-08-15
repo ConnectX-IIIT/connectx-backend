@@ -9,6 +9,14 @@ const questionSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    userName: {
+        type: String,
+        required: true
+    },
+    userProfile: {
+        type: String,
+        required: true
+    },
     answers: {
         type: Array
     },
@@ -16,10 +24,13 @@ const questionSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    attachedImages: {
+    reports: {
         type: Array
     },
-    reports: {
+    upvotedUsers: {
+        type: Array
+    },
+    downvotedUsers: {
         type: Array
     },
     upvotes: {
