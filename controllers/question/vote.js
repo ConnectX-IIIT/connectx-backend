@@ -14,8 +14,16 @@ exports.vote = async (req, res) => {
     }
 
     try {
+        const userDetails = await User.findOne({ _id: userId });
+
         switch (typeOfVote) {
             case '1':
+                if (userDetails.upvotedQuestions.includes(questionId)) {
+                    return res.status(401).json({
+                        error: 'Already upvoted!'
+                    })
+                }
+
                 await Question.updateOne(
                     { _id: questionId }, {
                     $push: {
@@ -33,7 +41,14 @@ exports.vote = async (req, res) => {
                     }
                 });
                 break;
+
             case '2':
+                if (!userDetails.upvotedQuestions.includes(questionId)) {
+                    return res.status(401).json({
+                        error: 'Not upvoted!'
+                    })
+                }
+
                 await Question.updateOne(
                     { _id: questionId }, {
                     $pull: {
@@ -51,7 +66,14 @@ exports.vote = async (req, res) => {
                     }
                 });
                 break;
+
             case '3':
+                if (userDetails.downvotedQuestions.includes(questionId)) {
+                    return res.status(401).json({
+                        error: 'Already downvoted!'
+                    })
+                }
+
                 await Question.updateOne(
                     { _id: questionId }, {
                     $push: {
@@ -69,7 +91,14 @@ exports.vote = async (req, res) => {
                     }
                 });
                 break;
+
             case '4':
+                if (!userDetails.downvotedQuestions.includes(questionId)) {
+                    return res.status(401).json({
+                        error: 'Not downvoted!'
+                    })
+                }
+
                 await Question.updateOne(
                     { _id: questionId }, {
                     $pull: {
