@@ -12,9 +12,6 @@ const userSchema = new mongoose.Schema({
     mobile: {
         type: Number
     },
-    authType: {
-        type: Number
-    },
     password: {
         type: String
     },
@@ -55,7 +52,7 @@ const userSchema = new mongoose.Schema({
     reports: {
         type: Array
     },
-    chats: {
+    conversations: {
         type: Array
     },
     upvotedPosts: {
