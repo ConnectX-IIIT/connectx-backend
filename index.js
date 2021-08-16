@@ -6,6 +6,8 @@ const homeRoutes = require('./routes/home');
 const postRoutes = require('./routes/post');
 const questionRoutes = require('./routes/question');
 const discussionRoutes = require('./routes/discussion');
+const conversationRoutes = require('./routes/conversation');
+const messageRoutes = require('./routes/message');
 require('dotenv').config();
 require('./configs/database');
 
@@ -28,5 +30,7 @@ app.use('/home', homeRoutes);
 app.use('/post', postRoutes);
 app.use('/discussion', discussionRoutes);
 app.use('/question', questionRoutes);
+app.use('/conversation', conversationRoutes);
+app.use('/message', messageRoutes);
 
 app.listen(port);
