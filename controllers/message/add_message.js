@@ -13,7 +13,7 @@ exports.addMessage = async (req, res) => {
     }
 
     try {
-        const messageInstance = new Message({ userId, message, reference, conversationId, timestamp: Date.now() });
+        const messageInstance = new Message({ userId, message, reference, conversationId });
         await messageInstance.save();
 
         return res.status(200).json({
