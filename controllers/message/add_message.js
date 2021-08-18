@@ -17,7 +17,7 @@ exports.addMessage = async (req, res) => {
         await messageInstance.save();
 
         return res.status(200).json({
-            message: `Message added successfully!`,
+            message: messageInstance,
         });
 
     } catch (err) {
