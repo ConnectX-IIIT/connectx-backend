@@ -13,17 +13,14 @@ const messageSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    timestamp: {
-        type: Number,
-        required: true
-    },
     reference: {
         type: String
     },
     picture: {
         type: String
     }
-})
+},
+    { timestamps: true })
 
 const Message = mongoose.model('messages', messageSchema);
 
