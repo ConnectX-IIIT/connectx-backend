@@ -2,7 +2,6 @@ const User = require("../../model/user_schema");
 const Conversation = require("../../model/conversation_schema");
 
 exports.addConversation = async (req, res) => {
-    const userId = req.userId;
     const userIds = req.body.userIds;
     const userProfiles = req.body.userProfiles;
     const userNames = req.body.userNames;
@@ -11,8 +10,8 @@ exports.addConversation = async (req, res) => {
         const conversation = new Conversation({ userIds, userProfiles, userNames });
         await conversation.save();
 
-        await User.updateOne(
-            { _id: userId }, {
+        await User.updateMany(
+            { _id: { $in: userIds } }, {
             $push: {
                 conversations: conversation._id.toString(),
             }
