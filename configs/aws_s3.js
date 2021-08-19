@@ -21,8 +21,7 @@ exports.uploadFile = (file, fileStream) => {
         Key: file.filename,
     }
 
-    // return s3.upload(uploadParams).promise();
-    return;
+    return s3.upload(uploadParams).promise();
 }
 
 exports.getFileStream = async (fileKey) => {
@@ -50,8 +49,7 @@ exports.getFileStream = async (fileKey) => {
                 Key: fileKey,
                 Bucket: bucketNameDownload
             }
-            // return s3.getObject(downloadParams).createReadStream();
-            return;
+            return s3.getObject(downloadParams).createReadStream();
 
         } else {
             return null;
@@ -87,8 +85,7 @@ exports.removeFile = async (fileKey) => {
                 Key: fileKey,
                 Bucket: bucketNameDownload
             }
-            // return s3.deleteObject(deleteParams).promise();
-            return;
+            return s3.deleteObject(deleteParams).promise();
 
         } else {
             return null;
