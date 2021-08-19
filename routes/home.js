@@ -5,7 +5,8 @@ const { addQuestion } = require("../controllers/home/add_question");
 const { search } = require("../controllers/home/search");
 const { verifyToken } = require("../middlewares/auth_middleware");
 
-const upload = multer({ dest: 'assets' });
+const storage = multer.diskStorage({});
+const upload = multer({ storage });
 const router = express.Router();
 
 router.get("/search/:key", verifyToken, search);
