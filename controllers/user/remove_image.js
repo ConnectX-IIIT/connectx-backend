@@ -1,15 +1,17 @@
-const { removeFile } = require("../../configs/aws_s3");
+const cloudinary = require("../../configs/cloudinary");
 const User = require("../../model/user_schema");
 
 exports.removeImage = async (req, res) => {
 
-    try {
-        const key = req.params.key;
-        const userId = req.userId;
-        const photoType = req.body.type;
-        const result = await removeFile(key);
+    const photoURL = req.body.photoURL;
+    const userId = req.userId;
+    const photoType = req.body.type;
 
-        if (result != null) {
+    try {
+        const publicId = photoURL.substring(photoURL.lastIndexOf('/') + 1, photoURL.lastIndexOf('.'));
+        const destroyRes = await cloudinary.uploader.destroy(publicId);
+
+        if (destroyRes.result === "ok") {
 
             if (photoType == "true") {
                 await User.updateOne(
