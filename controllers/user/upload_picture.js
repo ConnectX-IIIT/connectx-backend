@@ -1,7 +1,7 @@
-const { uploadFile } = require('../../configs/aws_s3');
 const User = require('../../model/user_schema');
 const resizeImg = require('resize-img');
 const fs = require('fs');
+const cloudinary = require('../../configs/cloudinary');
 
 exports.uploadPicture = async (req, res) => {
     const photo = req.file;
@@ -26,9 +26,7 @@ exports.uploadPicture = async (req, res) => {
 
         await fs.writeFileSync(photo.path, image);
 
-        const fileStream = fs.createReadStream(photo.path);
-        const result = await uploadFile(photo, fileStream);
-        fileStream.destroy();
+        const result = await cloudinary.uploader.upload(photo.path);
 
         await fs.unlinkSync(photo.path);
 
@@ -36,7 +34,7 @@ exports.uploadPicture = async (req, res) => {
             await User.updateOne(
                 { _id: userId }, {
                 $set: {
-                    profilePicture: result.Key,
+                    profilePicture: result.url,
                 }
             });
         } else {
