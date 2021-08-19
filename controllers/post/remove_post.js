@@ -50,15 +50,18 @@ exports.removePost = async (req, res) => {
         );
 
         await Post.deleteOne({ _id: postId });
-        const discussions = await Discussion.find({ _id: { $in: post.discussions } });
 
-        for (let discussion of discussions) {
-            const removeDiscussionRes = await updateDatabaseToRemoveDiscussion(discussion, discussion.user);
+        if (post.discussions.length !== 0) {
+            const discussions = await Discussion.find({ _id: { $in: post.discussions } });
 
-            if (removeDiscussionRes[0] != 200) {
-                return res.status(401).json({
-                    error: `You can't remove this comment!`,
-                });
+            for (let discussion of discussions) {
+                const removeDiscussionRes = await updateDatabaseToRemoveDiscussion(discussion, discussion.user);
+
+                if (removeDiscussionRes[0] != 200) {
+                    return res.status(401).json({
+                        error: `You can't remove this comment!`,
+                    });
+                }
             }
         }
 
