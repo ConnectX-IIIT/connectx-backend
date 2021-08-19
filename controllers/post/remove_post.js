@@ -1,7 +1,7 @@
 const Discussion = require("../../model/discussion_schema");
 const Post = require("../../model/post_schema");
 const User = require("../../model/user_schema");
-const { removeFile } = require("../../configs/aws_s3");
+const cloudinary = require("../../configs/cloudinary");
 const { updateDatabaseToRemoveDiscussion } = require("../discussion/remove_discussion");
 
 exports.removePost = async (req, res) => {
@@ -27,7 +27,8 @@ exports.removePost = async (req, res) => {
         const post = await Post.findOne({ _id: postId });
 
         for (let img of post.attachedImages) {
-            await removeFile(img);
+            let publicId = img.substring(img.lastIndexOf('/') + 1, img.lastIndexOf('.'));
+            await cloudinary.uploader.destroy(publicId);
         }
 
         await User.updateMany(
