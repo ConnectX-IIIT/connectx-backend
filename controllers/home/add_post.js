@@ -1,7 +1,6 @@
-const { uploadFile } = require("../../configs/aws_s3");
+const cloudinary = require("../../configs/cloudinary");
 const Post = require("../../model/post_schema");
 const User = require("../../model/user_schema");
-const fs = require('fs');
 
 exports.addPost = async (req, res) => {
     const userId = req.userId;
@@ -21,15 +20,8 @@ exports.addPost = async (req, res) => {
 
         for (let i = 0; i < photos.length; i = i + 1) {
 
-            const image = await fs.readFileSync(photos[i].path);
-            await fs.writeFileSync(photos[i].path, image);
-
-            const fileStream = fs.createReadStream(photos[i].path);
-            const result = await uploadFile(photos[i], fileStream);
-            fileStream.destroy();
-
-            attachedImages[i] = result.key;
-            await fs.unlinkSync(photos[i].path);
+            const result = await cloudinary.uploader.upload(photos[i].path);
+            attachedImages[i] = result.url;
         }
 
         const post = new Post({ user: userId, title, description, isProject, reactions: 0, jobLink, userName, userProfile, attachedImages, timestamp: Date.now() });
