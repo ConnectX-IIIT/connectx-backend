@@ -20,7 +20,7 @@ exports.addPost = async (req, res) => {
 
         for (let i = 0; i < photos.length; i = i + 1) {
 
-            const result = await cloudinary.uploader.upload(photos[i].path);
+            const result = await cloudinary.uploader.upload(photos[i].path, { quality: 'auto' });
             attachedImages[i] = result.url;
         }
 
