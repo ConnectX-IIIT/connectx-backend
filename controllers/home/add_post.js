@@ -10,15 +10,21 @@ exports.addPost = async (req, res) => {
     const jobLink = req.body.jobLink;
     const photos = req.files;
     let attachedImages = [];
+    let userName;
+    let userProfile;
 
     try {
+        const userDetails = await User.findOne({ _id: userId });
+        userName = userDetails.name;
+        userProfile = userDetails.profilePicture;
+
         for (let i = 0; i < photos.length; i = i + 1) {
 
             const result = await cloudinary.uploader.upload(photos[i].path);
             attachedImages[i] = result.url;
         }
 
-        const post = new Post({ user: userId, title, description, isProject, reactions: 0, jobLink, attachedImages, timestamp: Date.now() });
+        const post = new Post({ user: userId, title, description, isProject, reactions: 0, jobLink, userName, userProfile, attachedImages, timestamp: Date.now() });
         await post.save();
 
         await User.updateOne(
