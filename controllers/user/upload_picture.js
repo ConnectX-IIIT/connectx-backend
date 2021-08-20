@@ -25,9 +25,7 @@ exports.uploadPicture = async (req, res) => {
         });
 
         await fs.writeFileSync(photo.path, image);
-
         const result = await cloudinary.uploader.upload(photo.path, { quality: 'auto' });
-
         await fs.unlinkSync(photo.path);
 
         if (photoType == "true") {
