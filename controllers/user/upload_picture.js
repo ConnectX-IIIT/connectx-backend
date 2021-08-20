@@ -26,7 +26,7 @@ exports.uploadPicture = async (req, res) => {
 
         await fs.writeFileSync(photo.path, image);
 
-        const result = await cloudinary.uploader.upload(photo.path);
+        const result = await cloudinary.uploader.upload(photo.path, { quality: 'auto' });
 
         await fs.unlinkSync(photo.path);
 
@@ -41,7 +41,7 @@ exports.uploadPicture = async (req, res) => {
             await User.updateOne(
                 { _id: userId }, {
                 $set: {
-                    backgroundPicture: result.Key,
+                    backgroundPicture: result.url,
                 }
             });
         }
