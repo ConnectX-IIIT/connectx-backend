@@ -9,14 +9,6 @@ const discussionSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    userName: {
-        type: String,
-        required: true
-    },
-    userProfile: {
-        type: String,
-        required: true
-    },
     content: {
         type: String,
         required: true
