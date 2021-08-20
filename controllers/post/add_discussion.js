@@ -15,9 +15,7 @@ exports.addDiscussion = async (req, res) => {
     }
 
     try {
-        const userDetails = await User.findOne({ _id: userId });
-
-        const discussion = new Discussion({ user: userId, userName: userDetails.name, userProfile: userDetails.profilePicture, reactions: 0, postId, reference, content, timestamp: Date.now() });
+        const discussion = new Discussion({ user: userId, reactions: 0, postId, reference, content, timestamp: Date.now() });
         await discussion.save();
 
         await User.updateOne(
