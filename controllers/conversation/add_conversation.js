@@ -3,11 +3,9 @@ const Conversation = require("../../model/conversation_schema");
 
 exports.addConversation = async (req, res) => {
     const userIds = req.body.userIds;
-    const userProfiles = req.body.userProfiles;
-    const userNames = req.body.userNames;
 
     try {
-        const conversation = new Conversation({ userIds, userProfiles, userNames });
+        const conversation = new Conversation({ userIds });
         await conversation.save();
 
         await User.updateMany(
