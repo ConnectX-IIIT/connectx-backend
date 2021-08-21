@@ -18,7 +18,7 @@ exports.addConversation = async (req, res) => {
         });
 
         return res.status(200).json({
-            message: `Conversation added successfully!`,
+            id: conversation._id,
         });
 
     } catch (err) {
