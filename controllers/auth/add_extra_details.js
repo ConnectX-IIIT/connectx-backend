@@ -2,7 +2,9 @@ const User = require('../../model/user_schema');
 require('dotenv').config();
 
 exports.addExtraDetails = async (req, res) => {
-    const { mobile, batch, joiningYear, gender, passingYear, description, isAlumni, userId } = req.body;
+
+    const userId = req.userId;
+    const { mobile, batch, joiningYear, gender, passingYear, description, isAlumni } = req.body;
 
     if (!mobile || !batch || !joiningYear || !passingYear || !gender || !description) {
         return res.status(400).json({
