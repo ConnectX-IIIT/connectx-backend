@@ -2,17 +2,14 @@ const mongoose = require('mongoose');
 
 const groupSchema = new mongoose.Schema({
     members: {
-        type: Array
-    },
-    chats: {
-        type: Array
+        type: Array,
+        default: []
     },
     profilePicture: {
         type: String
     },
     name: {
-        type: String,
-        required: true
+        type: String
     },
     description: {
         type: String
