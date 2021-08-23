@@ -13,7 +13,7 @@ const { verifyToken } = require("../middlewares/auth_middleware");
 
 router.post("/signup", signUp);
 router.post("/signin", signIn);
-router.post("/addextradetails", addExtraDetails);
+router.post("/addextradetails", verifyToken, addExtraDetails);
 router.post("/forgotpassword", forgotPassword);
 router.post("/resetpassword", resetPassword);
 router.post("/googlesignin", googleSignin);
