@@ -3,6 +3,7 @@ const Message = require("../../model/message_schema");
 exports.addMessage = async (req, res) => {
     const userId = req.userId;
     const message = req.body.message;
+    const userName = req.body.name;
     const conversationId = req.params.key;
     const reference = req.body.reference;
 
@@ -13,7 +14,7 @@ exports.addMessage = async (req, res) => {
     }
 
     try {
-        const messageInstance = new Message({ userId, message, reference, conversationId });
+        const messageInstance = new Message({ userId, message, userName, reference, conversationId });
         await messageInstance.save();
 
         return res.status(200).json({
