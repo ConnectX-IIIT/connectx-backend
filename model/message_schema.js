@@ -9,6 +9,9 @@ const messageSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    userName: {
+        type: String
+    },
     conversationId: {
         type: String,
         required: true
