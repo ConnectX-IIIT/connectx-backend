@@ -9,6 +9,12 @@ const conversationSchema = new mongoose.Schema({
     },
     userNames: {
         type: Array
+    },
+    lastMessage: {
+        type: String
+    },
+    lastModified: {
+        type: Number
     }
 })
 
