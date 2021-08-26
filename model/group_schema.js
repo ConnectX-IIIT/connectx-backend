@@ -13,6 +13,12 @@ const groupSchema = new mongoose.Schema({
     },
     description: {
         type: String
+    },
+    lastMessage: {
+        type: String
+    },
+    lastModified: {
+        type: Number
     }
 })
 
