@@ -4,20 +4,17 @@ const User = require("../../model/user_schema");
 
 exports.addPost = async (req, res) => {
     const userId = req.userId;
+    const userDetails = req.userDetails;
     const title = req.body.title;
     const description = req.body.description;
     const isProject = req.body.isProject;
     const jobLink = req.body.jobLink;
     const photos = req.files;
     let attachedImages = [];
-    let userName;
-    let userProfile;
+    const userName = userDetails.name;
+    const userProfile = userDetails.profilePicture;
 
     try {
-        const userDetails = await User.findOne({ _id: userId });
-        userName = userDetails.name;
-        userProfile = userDetails.profilePicture;
-
         for (let i = 0; i < photos.length; i = i + 1) {
 
             const result = await cloudinary.uploader.upload(photos[i].path, { quality: 'auto' });

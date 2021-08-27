@@ -5,6 +5,7 @@ const User = require("../../model/user_schema");
 exports.addDiscussion = async (req, res) => {
     const postId = req.body.postId;
     const userId = req.userId;
+    const userDetails = req.userDetails;
     const reference = req.body.reference;
     const content = req.body.content;
 
@@ -15,8 +16,6 @@ exports.addDiscussion = async (req, res) => {
     }
 
     try {
-        const userDetails = await User.findOne({ _id: userId });
-
         const discussion = new Discussion({ user: userId, userName: userDetails.name, userProfile: userDetails.profilePicture, reactions: 0, postId, reference, content, timestamp: Date.now() });
         await discussion.save();
 
