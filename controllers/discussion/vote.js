@@ -5,6 +5,7 @@ exports.vote = async (req, res) => {
 
     const discussionId = req.body.discussionId;
     const userId = req.userId;
+    const userDetails = req.userDetails;
     const typeOfVote = req.params.key;
 
     if (!discussionId) {
@@ -14,8 +15,6 @@ exports.vote = async (req, res) => {
     }
 
     try {
-        const userDetails = await User.findOne({ _id: userId });
-
         switch (typeOfVote) {
             case '1':
                 if (userDetails.upvotedDiscussions.includes(discussionId)) {
