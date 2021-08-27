@@ -3,11 +3,12 @@ const { removeDiscussion } = require("../controllers/discussion/remove_discussio
 const { vote } = require("../controllers/discussion/vote");
 const { verifyToken } = require("../middlewares/auth_middleware");
 const { getDiscussions } = require("../controllers/discussion/get_discussions");
+const { isUserVerified } = require("../middlewares/user_verified");
 
 const router = express.Router();
 
-router.post("/vote/:key", verifyToken, vote);
-router.get("/remove/:key", verifyToken, removeDiscussion);
+router.post("/vote/:key", verifyToken, isUserVerified, vote);
+router.get("/remove/:key", verifyToken, isUserVerified, removeDiscussion);
 router.post("/getdiscussions", verifyToken, getDiscussions);
 
 module.exports = router;
