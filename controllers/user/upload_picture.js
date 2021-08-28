@@ -13,9 +13,12 @@ exports.uploadPicture = async (req, res) => {
     if (photoHeight > photoWidth) {
         photoHeight = photoHeight * 400 / photoWidth;
         photoWidth = 400;
-    } else {
+    } else if (photoHeight < photoWidth) {
         photoWidth = photoWidth * 400 / photoHeight;
         photoHeight = 400;
+    } else {
+        photoHeight = 400;
+        photoWidth = 400;
     }
 
     try {
