@@ -9,7 +9,7 @@ const baseurl_for_user_verification = "https://obscure-ridge-13663.herokuapp.com
 exports.updateDetails = async (req, res) => {
 
     const userId = req.userId;
-    const email = req.userEmail;
+    const email = req.email;
     const { userName, userEmail, mobile, description } = req.body;
 
     try {
