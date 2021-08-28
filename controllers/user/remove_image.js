@@ -13,7 +13,7 @@ exports.removeImage = async (req, res) => {
 
         if (destroyRes.result === "ok") {
 
-            if (photoType == "true") {
+            if (photoType) {
                 await User.updateOne(
                     { _id: userId }, {
                     $set: {
@@ -28,7 +28,6 @@ exports.removeImage = async (req, res) => {
                     }
                 });
             }
-
             return res.status(200).send('File removed successfully!');
 
         } else {
