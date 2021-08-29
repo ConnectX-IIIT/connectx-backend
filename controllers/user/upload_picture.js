@@ -1,7 +1,11 @@
 const User = require('../../model/user_schema');
+const Conversation = require('../../model/conversation_schema');
 const resizeImg = require('resize-img');
 const fs = require('fs');
 const cloudinary = require('../../configs/cloudinary');
+const Discussion = require('../../model/discussion_schema');
+const Question = require('../../model/question_schema');
+const Post = require('../../model/post_schema');
 
 exports.uploadPicture = async (req, res) => {
     const photo = req.file;
@@ -27,6 +31,8 @@ exports.uploadPicture = async (req, res) => {
             height: photoHeight
         });
 
+        const userDetails = await User.findOne({ _id: userId });
+
         await fs.writeFileSync(photo.path, image);
         const result = await cloudinary.uploader.upload(photo.path, { quality: 'auto' });
         await fs.unlinkSync(photo.path);
@@ -46,6 +52,38 @@ exports.uploadPicture = async (req, res) => {
                 }
             });
         }
+
+        await Conversation.updateMany(
+            { "userProfiles": userDetails.profilePicture },
+            { "$set": { "userProfiles.$": result.url } }
+        )
+
+        await Discussion.updateMany(
+            { _id: { $in: userDetails.discussions } },
+            {
+                $set: {
+                    userProfile: result.url,
+                },
+            }
+        )
+
+        await Question.updateMany(
+            { _id: { $in: userDetails.questions } },
+            {
+                $set: {
+                    userProfile: result.url,
+                },
+            }
+        )
+
+        await Post.updateMany(
+            { _id: { $in: userDetails.posts } },
+            {
+                $set: {
+                    userProfile: result.url,
+                },
+            }
+        )
 
         return res.status(200).json({
             url: result.url,
