@@ -38,6 +38,11 @@ exports.uploadPicture = async (req, res) => {
         const result = await cloudinary.uploader.upload(photo.path, { quality: 'auto' });
         await fs.unlinkSync(photo.path);
 
+        await Conversation.updateMany(
+            { "userProfiles": userDetails.profilePicture },
+            { $set: { "userProfiles.$": result.url } }
+        )
+
         if (photoType == "true") {
             await User.updateOne(
                 { _id: userId }, {
@@ -54,15 +59,10 @@ exports.uploadPicture = async (req, res) => {
             });
         }
 
-        await Conversation.updateMany(
-            { "userProfiles": userDetails.profilePicture },
-            { "$set": { "userProfiles.$": result.url } }
-        )
-
         await Group.updateOne(
             { 'members.userId': userId },
             {
-                '$set': {
+                $set: {
                     'members.$.userProfile': result.url,
                 }
             }
