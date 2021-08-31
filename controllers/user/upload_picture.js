@@ -6,6 +6,7 @@ const cloudinary = require('../../configs/cloudinary');
 const Discussion = require('../../model/discussion_schema');
 const Question = require('../../model/question_schema');
 const Post = require('../../model/post_schema');
+const Group = require('../../model/group_schema');
 
 exports.uploadPicture = async (req, res) => {
     const photo = req.file;
@@ -56,6 +57,15 @@ exports.uploadPicture = async (req, res) => {
         await Conversation.updateMany(
             { "userProfiles": userDetails.profilePicture },
             { "$set": { "userProfiles.$": result.url } }
+        )
+
+        await Group.updateOne(
+            { 'members.userId': userId },
+            {
+                '$set': {
+                    'members.$.userProfile': result.url,
+                }
+            }
         )
 
         await Discussion.updateMany(
