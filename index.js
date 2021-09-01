@@ -5,6 +5,7 @@ const userRoutes = require('./routes/user');
 const homeRoutes = require('./routes/home');
 const postRoutes = require('./routes/post');
 const groupRoutes = require('./routes/group');
+const answerRoutes = require('./routes/answer');
 const questionRoutes = require('./routes/question');
 const discussionRoutes = require('./routes/discussion');
 const conversationRoutes = require('./routes/conversation');
@@ -34,5 +35,6 @@ app.use('/question', questionRoutes);
 app.use('/conversation', conversationRoutes);
 app.use('/message', messageRoutes);
 app.use('/group', groupRoutes);
+app.use('/answer', answerRoutes);
 
 app.listen(port);
