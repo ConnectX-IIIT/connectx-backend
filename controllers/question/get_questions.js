@@ -3,11 +3,15 @@ const Question = require("../../model/question_schema");
 exports.getQuestions = async (req, res) => {
 
     const typeOfQuestions = req.params.key;
+    const userId = req.body.userId;
+    const questionId = req.body.questionId;
     let questions;
 
     try {
-        if (typeOfQuestions.length === 24) {
-            questions = await Question.find({ user: typeOfQuestions }).sort({ "timestamp": -1 });
+        if (userId) {
+            questions = await Question.find({ user: userId }).sort({ "timestamp": -1 });
+        } else if (questionId) {
+            questions = await Question.findOne({ _id: questionId });
         } else {
             questions = await getQuestionsByType(typeOfQuestions);
         }
