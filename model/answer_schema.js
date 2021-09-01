@@ -9,21 +9,27 @@ const answerSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    userName: {
+        type: String
+    },
+    userProfile: {
+        type: String
+    },
     timestamp: {
         type: Number,
         required: true
     },
-    reference: {
+    questionId: {
         type: String
-    },
-    attachedImages: {
-        type: Array
     },
     upvotes: {
         type: Number
     },
-    lastUpdate: {
-        type: Number
+    upvotedUsers: {
+        type: Array
+    },
+    downvotedUsers: {
+        type: Array
     },
     reports: {
         type: Array
