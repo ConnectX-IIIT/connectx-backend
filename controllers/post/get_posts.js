@@ -3,12 +3,17 @@ const Post = require("../../model/post_schema");
 exports.getPosts = async (req, res) => {
 
     const typeOfPosts = req.params.key;
+    let posts;
 
     // db.demo33.aggregate({$unwind:"$ListOfStudent"}, { $group : {_id:'$_id', ct:{$sum:1}}}, { $sort :{ ct: -1}} );
     // db.users.aggregate([{ $sort : { age : -1, posts: 1 } }])
 
     try {
-        const posts = await getPostsByType(typeOfPosts);
+        if (typeOfPosts.length === 24) {
+            posts = await Post.find({ user: typeOfPosts }).sort({ "timestamp": -1 });
+        } else {
+            posts = await getPostsByType(typeOfPosts);
+        }
 
         return res.status(200).json({
             postData: posts
@@ -38,6 +43,6 @@ async function getPostsByType(type) {
         case '7':
             return Post.find({ isProject: true }).sort({ "timestamp": -1 });
         default:
-            return [];
+            return ["hello"];
     }
 }

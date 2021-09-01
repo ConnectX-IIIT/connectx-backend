@@ -3,9 +3,14 @@ const Question = require("../../model/question_schema");
 exports.getQuestions = async (req, res) => {
 
     const typeOfQuestions = req.params.key;
+    let questions;
 
     try {
-        const questions = await getQuestionsByType(typeOfQuestions);
+        if (typeOfQuestions.length === 24) {
+            questions = await Question.find({ user: typeOfQuestions }).sort({ "timestamp": -1 });
+        } else {
+            questions = await getQuestionsByType(typeOfQuestions);
+        }
 
         return res.status(200).json({
             questions
