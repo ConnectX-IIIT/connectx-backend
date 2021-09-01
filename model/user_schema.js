@@ -87,8 +87,10 @@ const userSchema = new mongoose.Schema({
     },
     questions: {
         type: Array
+    },
+    answers: {
+        type: Array
     }
-
 })
 
 const User = mongoose.model('Users', userSchema);
