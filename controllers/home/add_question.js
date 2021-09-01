@@ -3,9 +3,10 @@ const Question = require("../../model/question_schema");
 
 exports.addQuestion = async (req, res) => {
     const userId = req.userId;
+    const userDetails = req.userDetails;
     const question = req.body.question;
-    const userName = req.body.userName;
-    const userProfile = req.body.userProfile;
+    const userName = userDetails.name;
+    const userProfile = userDetails.profilePicture;
 
     if (!question) {
         return res.status(400).json({
