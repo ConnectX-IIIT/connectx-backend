@@ -79,6 +79,12 @@ const userSchema = new mongoose.Schema({
     downvotedDiscussions: {
         type: Array
     },
+    upvotedComments: {
+        type: Array
+    },
+    downvotedComments: {
+        type: Array
+    },
     posts: {
         type: Array
     },
