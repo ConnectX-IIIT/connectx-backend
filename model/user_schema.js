@@ -85,6 +85,9 @@ const userSchema = new mongoose.Schema({
     discussions: {
         type: Array
     },
+    comments: {
+        type: Array
+    },
     questions: {
         type: Array
     },
