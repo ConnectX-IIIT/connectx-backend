@@ -33,6 +33,9 @@ const answerSchema = new mongoose.Schema({
     },
     reports: {
         type: Array
+    },
+    comments: {
+        type: Array
     }
 })
 
