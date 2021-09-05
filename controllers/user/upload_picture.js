@@ -38,7 +38,6 @@ exports.uploadPicture = async (req, res) => {
         const result = await cloudinary.uploader.upload(photo.path, { quality: 'auto' });
         await fs.unlinkSync(photo.path);
 
-
         if (photoType == "true") {
             await User.updateOne(
                 { _id: userId }, {

@@ -1,6 +1,8 @@
 const cloudinary = require("../../configs/cloudinary");
 const Post = require("../../model/post_schema");
 const User = require("../../model/user_schema");
+const resizeImg = require('resize-img');
+const fs = require('fs');
 
 exports.addPost = async (req, res) => {
     const userId = req.userId;
@@ -9,6 +11,7 @@ exports.addPost = async (req, res) => {
     const description = req.body.description;
     const isProject = req.body.isProject;
     const jobLink = req.body.jobLink;
+    const imageDimensions = JSON.parse(req.body.attachedImgDimensions);
     const photos = req.files;
     let attachedImages = [];
     const userName = userDetails.name;
@@ -17,11 +20,24 @@ exports.addPost = async (req, res) => {
     try {
         for (let i = 0; i < photos.length; i = i + 1) {
 
+            if (imageDimensions[i].width > 1500) {
+                imageDimensions[i].height = imageDimensions[i].height * 1500 / imageDimensions[i].width;
+                imageDimensions[i].width = 1500;
+            }
+
+            const image = await resizeImg(fs.readFileSync(photos[i].path), {
+                width: imageDimensions[i].width,
+                height: imageDimensions[i].height
+            });
+
+            await fs.writeFileSync(photos[i].path, image);
             const result = await cloudinary.uploader.upload(photos[i].path, { quality: 'auto' });
+            await fs.unlinkSync(photos[i].path);
+
             attachedImages[i] = result.url;
         }
 
-        const post = new Post({ user: userId, title, description, isProject, reactions: 0, jobLink, userName, userProfile, attachedImages, timestamp: Date.now() });
+        const post = new Post({ user: userId, title, description, isProject, reactions: 0, jobLink, userName, userProfile, attachedImages, imageDimensions, timestamp: Date.now() });
         await post.save();
 
         await User.updateOne(
@@ -36,6 +52,7 @@ exports.addPost = async (req, res) => {
         });
 
     } catch (err) {
+        console.log(err);
         return res.status(500).json({
             error: `Server error occured!`,
         });
