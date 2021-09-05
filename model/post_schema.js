@@ -49,13 +49,9 @@ const postSchema = new mongoose.Schema({
     attachedImages: {
         type: Array
     },
-    imageHeights: {
-        type: Array
-    },
-    imageWidths: {
+    imageDimensions: {
         type: Array
     }
-
 })
 
 const Post = mongoose.model('posts', postSchema);
