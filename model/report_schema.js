@@ -2,10 +2,13 @@ const mongoose = require('mongoose');
 
 const reportSchema = new mongoose.Schema({
     type: {
-        type: Number,
+        type: String,
         required: true
     },
     reference: {
+        type: String
+    },
+    description: {
         type: String
     },
     user: {
