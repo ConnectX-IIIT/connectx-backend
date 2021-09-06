@@ -27,12 +27,10 @@ const postSchema = new mongoose.Schema({
         type: Number
     },
     userName: {
-        type: String,
-        required: true
+        type: String
     },
     userProfile: {
-        type: String,
-        required: true
+        type: String
     },
     discussions: {
         type: Array
