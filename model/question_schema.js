@@ -10,12 +10,10 @@ const questionSchema = new mongoose.Schema({
         required: true
     },
     userName: {
-        type: String,
-        required: true
+        type: String
     },
     userProfile: {
-        type: String,
-        required: true
+        type: String
     },
     answers: {
         type: Array
