@@ -24,7 +24,8 @@ exports.addExtraDetails = async (req, res) => {
                 gender,
                 isAlumni,
                 description,
-                isVerified: false
+                isVerified: false,
+                isAdmin: false
             }
         });
 
