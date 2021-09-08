@@ -13,7 +13,7 @@ const upload = multer({ storage });
 const router = express.Router();
 
 router.post("/vote/:key", verifyToken, isUserVerified, vote);
-router.route('/updatepost').post(verifyToken, isUserVerified, upload.array('attachedImgs'), updatePost);
+router.route('/updatepost/:postId').post(verifyToken, isUserVerified, upload.array('attachedImgs'), updatePost);
 router.get("/remove/:key", verifyToken, isUserVerified, removePost);
 router.get("/getposts/:key", verifyToken, getPosts);
 router.post("/adddiscussion", verifyToken, isUserVerified, addDiscussion);
