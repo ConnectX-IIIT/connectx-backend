@@ -48,7 +48,7 @@ exports.addPost = async (req, res) => {
         });
 
         return res.status(200).json({
-            message: `Post added successfully!`,
+            post,
         });
 
     } catch (err) {
