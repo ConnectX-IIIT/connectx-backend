@@ -42,6 +42,12 @@ exports.removeQuestion = async (req, res) => {
             }
         );
 
+        await Question.deleteOne({ _id: questionId });
+
+        return res.status(200).json({
+            message: `Question removed!`,
+        });
+
     } catch (error) {
         return res.status(500).json({
             error: `Server error occcured!`,
