@@ -6,9 +6,9 @@ exports.isUserVerified = async (req, res, next) => {
     try {
         const userDetails = await User.findOne({ _id: userId });
 
-        if (!userDetails.isVerified) {
+        if (!userDetails.isMailVerified) {
             return res.status(408).json({
-                error: "User not verified!",
+                error: "Mail not verified!",
             });
         }
 
